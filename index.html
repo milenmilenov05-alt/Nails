@@ -800,6 +800,82 @@
         @media (prefers-color-scheme: dark) {
             /* Keep light theme for this app - it's a nail salon app */
         }
+
+        /* ═══════════════════════════════ EARNINGS TAB ═════════════════════════ */
+        .earnings-panel { display: none; padding: 14px 14px 0; }
+        .earnings-panel.active { display: block; }
+
+        .year-nav {
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; margin-bottom: 14px;
+        }
+        .year-nav button {
+            background: #f3f4f6; border: none;
+            width: 36px; height: 36px; border-radius: 10px;
+            font-size: 18px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background var(--transition);
+        }
+        .year-nav button:active { background: var(--primary-light); }
+        .year-label { font-size: 18px; font-weight: 900; color: var(--text); min-width: 60px; text-align: center; }
+
+        .month-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 16px; }
+        .month-card {
+            background: white; border-radius: var(--radius-md);
+            padding: 12px 8px; text-align: center;
+            box-shadow: var(--shadow-sm); border: 2px solid transparent;
+            cursor: pointer; transition: all var(--transition); position: relative;
+        }
+        .month-card.selected { border-color: var(--primary); background: var(--primary-light); }
+        .month-card.current-month::after {
+            content: '●'; position: absolute; top: 4px; right: 6px;
+            font-size: 8px; color: var(--primary);
+        }
+        .month-card-name { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: capitalize; margin-bottom: 4px; }
+        .month-card-amount { font-size: 15px; font-weight: 900; color: var(--text); }
+        .month-card-amount.has-income { color: var(--primary); }
+        .month-card-count { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+        .range-section { background: white; border-radius: var(--radius-md); padding: 14px; margin-bottom: 14px; box-shadow: var(--shadow-sm); }
+        .range-section h3 { font-size: 14px; font-weight: 800; color: var(--primary); margin-bottom: 12px; }
+        .range-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        .range-inputs label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+        .range-inputs input[type="date"] { width: 100%; padding: 9px 10px; border: 1.5px solid #e5e7eb; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; background: #f9fafb; }
+
+        .range-presets { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+        .preset-btn { background: #f3f4f6; border: none; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: all var(--transition); }
+        .preset-btn.active-preset { background: var(--primary-light); color: var(--primary); }
+
+        .earnings-summary {
+            background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+            border-radius: var(--radius-md); padding: 18px; color: white;
+            margin-bottom: 14px; box-shadow: var(--shadow-lg);
+        }
+        .earnings-summary .summary-label { font-size: 12px; font-weight: 700; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .earnings-summary .summary-total { font-size: 36px; font-weight: 900; letter-spacing: -1px; margin-bottom: 8px; }
+        .earnings-summary .summary-meta { display: flex; gap: 16px; font-size: 13px; opacity: 0.85; flex-wrap: wrap; }
+
+        .location-split { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+        .split-card { background: white; border-radius: var(--radius-md); padding: 14px; box-shadow: var(--shadow-sm); text-align: center; }
+        .split-card .split-icon { font-size: 22px; margin-bottom: 4px; }
+        .split-card .split-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .split-card .split-amount { font-size: 20px; font-weight: 900; }
+        .split-card.tarnovo .split-amount { color: var(--tarnovo-text); }
+        .split-card.selo    .split-amount { color: var(--selo-text); }
+        .split-card .split-count { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+        .breakdown-section { background: white; border-radius: var(--radius-md); padding: 14px; margin-bottom: 14px; box-shadow: var(--shadow-sm); }
+        .breakdown-section h3 { font-size: 14px; font-weight: 800; color: var(--primary); margin-bottom: 12px; }
+        .breakdown-row { padding: 8px 0; border-bottom: 1px solid #f3f4f6; }
+        .breakdown-row:last-child { border-bottom: none; }
+        .breakdown-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+        .breakdown-name { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+        .breakdown-count { font-size: 12px; color: var(--text-muted); margin: 0 8px; }
+        .breakdown-amount { font-size: 14px; font-weight: 800; color: var(--primary); }
+        .breakdown-bar-wrap { width: 100%; background: #f3f4f6; border-radius: 4px; height: 4px; }
+        .breakdown-bar { height: 4px; background: linear-gradient(90deg, var(--accent), var(--primary-dark)); border-radius: 4px; transition: width 0.4s ease; }
+
+        .no-earnings { text-align: center; padding: 30px; color: var(--text-muted); font-size: 14px; }
     </style>
 </head>
 <body>
@@ -841,6 +917,7 @@
     <div class="view-mode-switch">
         <button class="mode-btn active" id="mode-date"     onclick="setViewMode('date')">📅 По дата</button>
         <button class="mode-btn"        id="mode-upcoming" onclick="setViewMode('upcoming')">📋 Предстоящи</button>
+        <button class="mode-btn"        id="mode-earnings" onclick="setViewMode('earnings')">💰 Приходи</button>
     </div>
 
     <div class="date-nav" id="dateNavContainer">
@@ -865,11 +942,50 @@
     </div>
     <div class="stat-chip">
         <span class="stat-icon">💰</span>
-        <span id="priceStat">0 лв.</span>
+        <span id="priceStat">0 €</span>
     </div>
 </div>
 
 <div class="container" id="appointmentsList"></div>
+
+<!-- Earnings Panel -->
+<div class="earnings-panel" id="earningsPanel">
+
+    <!-- Year navigation -->
+    <div class="year-nav">
+        <button onclick="changeEarningsYear(-1)">&#8249;</button>
+        <span class="year-label" id="earningsYearLabel">2025</span>
+        <button onclick="changeEarningsYear(1)">&#8250;</button>
+    </div>
+
+    <!-- Month grid -->
+    <div class="month-grid" id="monthGrid"></div>
+
+    <!-- Range picker -->
+    <div class="range-section">
+        <h3>📆 Произволен период</h3>
+        <div class="range-presets">
+            <button class="preset-btn" onclick="setPreset('week')">Тази седмица</button>
+            <button class="preset-btn" onclick="setPreset('month')">Този месец</button>
+            <button class="preset-btn" onclick="setPreset('quarter')">3 месеца</button>
+            <button class="preset-btn" onclick="setPreset('year')">Тази година</button>
+            <button class="preset-btn" onclick="setPreset('all')">Всичко</button>
+        </div>
+        <div class="range-inputs">
+            <div>
+                <label>От дата</label>
+                <input type="date" id="rangeFrom" onchange="renderEarnings()">
+            </div>
+            <div>
+                <label>До дата</label>
+                <input type="date" id="rangeTo" onchange="renderEarnings()">
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary + breakdown rendered here -->
+    <div id="earningsResult"></div>
+</div>
 
 <button class="fab" onclick="openModal()">
     <span class="fab-plus">+</span>
@@ -923,7 +1039,7 @@
                     <input type="tel" id="formPhone" placeholder="0888..." autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label>Цена (лв.)</label>
+                    <label>Цена (€)</label>
                     <input type="number" id="formPrice" placeholder="50" step="1" min="0">
                 </div>
             </div>
@@ -1104,8 +1220,21 @@
         currentViewMode = mode;
         document.getElementById('mode-date').classList.toggle('active', mode === 'date');
         document.getElementById('mode-upcoming').classList.toggle('active', mode === 'upcoming');
-        document.getElementById('dateNavContainer').style.display = mode === 'date' ? 'flex' : 'none';
-        renderAppointments();
+        document.getElementById('mode-earnings').classList.toggle('active', mode === 'earnings');
+
+        const isEarnings = mode === 'earnings';
+        document.getElementById('dateNavContainer').style.display = (mode === 'date') ? 'flex' : 'none';
+        document.getElementById('appointmentsList').style.display = isEarnings ? 'none' : '';
+        document.getElementById('earningsPanel').classList.toggle('active', isEarnings);
+        // hide stats bar when in earnings mode
+        document.querySelector('.stats-bar').style.display = isEarnings ? 'none' : '';
+
+        if (isEarnings) {
+            renderMonthGrid();
+            renderEarnings();
+        } else {
+            renderAppointments();
+        }
     }
 
     function changeDate(days) {
@@ -1154,7 +1283,7 @@
         // Stats
         const totalPrice = filtered.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
         document.getElementById('countStat').textContent = `${filtered.length} часа`;
-        document.getElementById('priceStat').textContent = `${totalPrice} лв.`;
+        document.getElementById('priceStat').textContent = `${totalPrice} €`;
 
         if (filtered.length === 0) {
             listEl.innerHTML = `
@@ -1180,7 +1309,7 @@
 
             const locLabel = app.location === 'tarnovo' ? '📍 Търново' : '🏡 На село';
             const locClass = app.location === 'tarnovo' ? 'tarnovo' : 'selo';
-            const priceTag = app.price ? `<span class="tag price">💰 ${escapeHtml(app.price)} лв.</span>` : '';
+            const priceTag = app.price ? `<span class="tag price">💰 ${escapeHtml(app.price)} €</span>` : '';
             const notesHtml = app.notes ? `<div class="card-notes">📝 ${escapeHtml(app.notes)}</div>` : '';
             const callBtn = app.phone
                 ? `<a href="tel:${escapeHtml(app.phone)}" class="action-btn call">📞 Обади се</a>`
@@ -1395,6 +1524,230 @@
     // Initial render
     // ═══════════════════════════════════════════════════════════════
     renderAppointments();
+
+    // ═══════════════════════════════════════════════════════════════
+    // EARNINGS — state
+    // ═══════════════════════════════════════════════════════════════
+    let earningsYear = new Date().getFullYear();
+    let selectedEarningsMonth = null; // null = use range; number 0-11 = month index
+
+    const BG_MONTHS = [
+        'Януари','Февруари','Март','Април','Май','Юни',
+        'Юли','Август','Септември','Октомври','Ноември','Декември'
+    ];
+
+    function getDateString(d) {
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // EARNINGS — year navigation
+    // ═══════════════════════════════════════════════════════════════
+    function changeEarningsYear(delta) {
+        earningsYear += delta;
+        document.getElementById('earningsYearLabel').textContent = earningsYear;
+        selectedEarningsMonth = null;
+        renderMonthGrid();
+        // clear range when changing year
+        document.getElementById('rangeFrom').value = '';
+        document.getElementById('rangeTo').value = '';
+        document.getElementById('earningsResult').innerHTML = '';
+        // remove active preset
+        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // EARNINGS — month grid
+    // ═══════════════════════════════════════════════════════════════
+    function renderMonthGrid() {
+        document.getElementById('earningsYearLabel').textContent = earningsYear;
+        const today = new Date();
+        const thisYear  = today.getFullYear();
+        const thisMonth = today.getMonth();
+        let html = '';
+
+        for (let m = 0; m < 12; m++) {
+            const monthStart = `${earningsYear}-${String(m+1).padStart(2,'0')}-01`;
+            const monthEnd   = `${earningsYear}-${String(m+1).padStart(2,'0')}-${new Date(earningsYear, m+1, 0).getDate()}`;
+            const inMonth = appointments.filter(a =>
+                a.date >= monthStart && a.date <= monthEnd && a.price
+            );
+            const total = inMonth.reduce((s, a) => s + (Number(a.price) || 0), 0);
+            const count = inMonth.length;
+
+            const isCurrent = earningsYear === thisYear && m === thisMonth;
+            const isSelected = selectedEarningsMonth === m;
+
+            html += `
+                <div class="month-card ${isSelected ? 'selected' : ''} ${isCurrent ? 'current-month' : ''}"
+                     onclick="selectMonth(${m})">
+                    <div class="month-card-name">${BG_MONTHS[m]}</div>
+                    <div class="month-card-amount ${total > 0 ? 'has-income' : ''}">${total > 0 ? total + ' €' : '—'}</div>
+                    <div class="month-card-count">${count > 0 ? count + ' часа' : ''}</div>
+                </div>`;
+        }
+        document.getElementById('monthGrid').innerHTML = html;
+    }
+
+    function selectMonth(monthIndex) {
+        selectedEarningsMonth = monthIndex;
+        renderMonthGrid();
+
+        // Set range to that month
+        const year = earningsYear;
+        const m = monthIndex;
+        const firstDay = getDateString(new Date(year, m, 1));
+        const lastDay  = getDateString(new Date(year, m+1, 0));
+        document.getElementById('rangeFrom').value = firstDay;
+        document.getElementById('rangeTo').value   = lastDay;
+
+        // clear preset highlights
+        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
+        renderEarnings();
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // EARNINGS — range presets
+    // ═══════════════════════════════════════════════════════════════
+    function setPreset(key) {
+        selectedEarningsMonth = null;
+        renderMonthGrid();
+        const today = new Date();
+        let from, to;
+
+        if (key === 'week') {
+            const day = today.getDay() === 0 ? 6 : today.getDay() - 1; // Monday start
+            from = new Date(today); from.setDate(today.getDate() - day);
+            to   = new Date(today);
+        } else if (key === 'month') {
+            from = new Date(today.getFullYear(), today.getMonth(), 1);
+            to   = new Date(today.getFullYear(), today.getMonth()+1, 0);
+            earningsYear = today.getFullYear();
+        } else if (key === 'quarter') {
+            from = new Date(today); from.setMonth(today.getMonth() - 2); from.setDate(1);
+            to   = new Date(today.getFullYear(), today.getMonth()+1, 0);
+        } else if (key === 'year') {
+            from = new Date(today.getFullYear(), 0, 1);
+            to   = new Date(today.getFullYear(), 11, 31);
+            earningsYear = today.getFullYear();
+        } else if (key === 'all') {
+            const dates = appointments.map(a => a.date).sort();
+            if (dates.length === 0) { renderEarnings(); return; }
+            from = new Date(dates[0] + 'T00:00:00');
+            to   = new Date(dates[dates.length-1] + 'T00:00:00');
+        }
+
+        document.getElementById('rangeFrom').value = getDateString(from);
+        document.getElementById('rangeTo').value   = getDateString(to);
+
+        // highlight active preset
+        document.querySelectorAll('.preset-btn').forEach(b => {
+            b.classList.toggle('active-preset', b.textContent.trim() === {
+                week: 'Тази седмица', month: 'Този месец',
+                quarter: '3 месеца', year: 'Тази година', all: 'Всичко'
+            }[key]);
+        });
+        renderEarnings();
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // EARNINGS — main render
+    // ═══════════════════════════════════════════════════════════════
+    function renderEarnings() {
+        const fromVal = document.getElementById('rangeFrom').value;
+        const toVal   = document.getElementById('rangeTo').value;
+        const el = document.getElementById('earningsResult');
+
+        if (!fromVal || !toVal) {
+            el.innerHTML = `<div class="no-earnings">👆 Избери месец или период горе</div>`;
+            return;
+        }
+
+        if (fromVal > toVal) {
+            el.innerHTML = `<div class="no-earnings">⚠️ „От дата" трябва да е преди „До дата"</div>`;
+            return;
+        }
+
+        const filtered = appointments.filter(a => a.price && a.date >= fromVal && a.date <= toVal);
+
+        // From-to label
+        const fromDate = new Date(fromVal + 'T00:00:00');
+        const toDate   = new Date(toVal   + 'T00:00:00');
+        const periodLabel = fromVal === toVal
+            ? fromDate.toLocaleDateString('bg-BG', { day: 'numeric', month: 'long', year: 'numeric' })
+            : `${fromDate.toLocaleDateString('bg-BG', { day: 'numeric', month: 'short' })} — ${toDate.toLocaleDateString('bg-BG', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+
+        const total  = filtered.reduce((s, a) => s + (Number(a.price) || 0), 0);
+        const avgPer = filtered.length > 0 ? (total / filtered.length).toFixed(1) : 0;
+
+        if (filtered.length === 0) {
+            el.innerHTML = `
+                <div class="earnings-summary">
+                    <div class="summary-label">${periodLabel}</div>
+                    <div class="summary-total">0 €</div>
+                    <div class="summary-meta"><span>📋 Няма часове с цена</span></div>
+                </div>`;
+            return;
+        }
+
+        // Location split
+        const tarFilter = filtered.filter(a => a.location === 'tarnovo');
+        const seloFilter = filtered.filter(a => a.location === 'selo');
+        const tarTotal  = tarFilter.reduce((s, a) => s + (Number(a.price) || 0), 0);
+        const seloTotal = seloFilter.reduce((s, a) => s + (Number(a.price) || 0), 0);
+
+        // Procedure breakdown
+        const procMap = {};
+        filtered.forEach(a => {
+            if (!procMap[a.procedure]) procMap[a.procedure] = { count: 0, total: 0 };
+            procMap[a.procedure].count++;
+            procMap[a.procedure].total += Number(a.price) || 0;
+        });
+        const procList = Object.entries(procMap).sort((a, b) => b[1].total - a[1].total);
+        const maxProc  = procList[0]?.[1].total || 1;
+
+        const breakdownHtml = procList.map(([name, data]) => `
+            <div class="breakdown-row">
+                <div class="breakdown-top">
+                    <span class="breakdown-name">${escapeHtml(name)}</span>
+                    <span class="breakdown-count">${data.count}×</span>
+                    <span class="breakdown-amount">${data.total} €</span>
+                </div>
+                <div class="breakdown-bar-wrap">
+                    <div class="breakdown-bar" style="width:${Math.round(data.total/maxProc*100)}%"></div>
+                </div>
+            </div>`).join('');
+
+        el.innerHTML = `
+            <div class="earnings-summary">
+                <div class="summary-label">${periodLabel}</div>
+                <div class="summary-total">${total} €</div>
+                <div class="summary-meta">
+                    <span>📋 ${filtered.length} часа</span>
+                    <span>📊 Средно ${avgPer} €/час</span>
+                </div>
+            </div>
+
+            <div class="location-split">
+                <div class="split-card tarnovo">
+                    <div class="split-icon">📍</div>
+                    <div class="split-label">Търново</div>
+                    <div class="split-amount">${tarTotal} €</div>
+                    <div class="split-count">${tarFilter.length} часа</div>
+                </div>
+                <div class="split-card selo">
+                    <div class="split-icon">🏡</div>
+                    <div class="split-label">На село</div>
+                    <div class="split-amount">${seloTotal} €</div>
+                    <div class="split-count">${seloFilter.length} часа</div>
+                </div>
+            </div>
+
+            <div class="breakdown-section">
+                <h3>💅 По процедура</h3>
+                ${breakdownHtml}
+            </div>`;
+    }
 </script>
 </body>
 </html>
