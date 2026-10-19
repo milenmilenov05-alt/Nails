@@ -13,8 +13,6 @@
     <meta name="description" content="График за маникюр - записване на часове офлайн">
 
     <link rel="manifest" href="manifest.json">
-
-    <!-- Apple touch icons (generated inline as SVG data URIs) -->
     <link rel="apple-touch-icon" href="icon-192.png">
 
     <title>💅 График Нокти</title>
@@ -184,15 +182,16 @@
 
         .mode-btn {
             flex: 1;
-            padding: 7px;
+            padding: 7px 4px;
             border-radius: 8px;
             border: none;
             background: transparent;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--text-muted);
             cursor: pointer;
             transition: all var(--transition);
+            white-space: nowrap;
         }
 
         .mode-btn.active {
@@ -315,7 +314,259 @@
 
         .stat-chip .stat-icon { font-size: 14px; }
 
-        /* ═══════════════════════════════ CARDS ════════════════════════════════ */
+        /* ═══════════════════════════════ HOUR GRID ═════════════════════════════ */
+        .hour-grid {
+            padding: 0 12px 10px;
+        }
+
+        .day-header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 4px 12px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 4px;
+        }
+
+        .day-header-info .day-name {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: capitalize;
+        }
+
+        .day-header-info .day-date {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .hour-row {
+            display: flex;
+            align-items: stretch;
+            min-height: 52px;
+            border-bottom: 1px solid #f3e8f0;
+            position: relative;
+        }
+
+        .hour-row:last-child { border-bottom: none; }
+
+        .hour-label {
+            width: 46px;
+            flex-shrink: 0;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            padding: 8px 6px 0 0;
+            text-align: right;
+            line-height: 1;
+            border-right: 2px solid var(--border);
+        }
+
+        .hour-label.current-hour {
+            color: var(--primary);
+            font-size: 13px;
+        }
+
+        .hour-slots {
+            flex: 1;
+            padding: 4px 0 4px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .hour-empty {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            min-height: 44px;
+        }
+
+        .hour-add-btn {
+            background: none;
+            border: 1.5px dashed #f8bbd0;
+            border-radius: 8px;
+            color: #f48fb1;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hour-add-btn:active {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ═══════════════════════════════ APPOINTMENT SLOT ══════════════════════ */
+        .appt-slot {
+            background: white;
+            border-radius: 10px;
+            padding: 8px 10px;
+            border: 1.5px solid #f3e8f0;
+            box-shadow: 0 1px 6px rgba(194,24,91,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .appt-slot::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: var(--primary);
+            border-radius: 4px 0 0 4px;
+        }
+
+        .appt-slot.loc-tarnovo::before { background: var(--tarnovo-accent); }
+        .appt-slot.loc-selo::before    { background: var(--selo-accent); }
+
+        .appt-slot.completed {
+            opacity: 0.5;
+            background: #f9fafb;
+        }
+
+        .appt-top {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 5px;
+        }
+
+        .appt-time {
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--primary);
+            min-width: 38px;
+        }
+
+        .appt-name {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text);
+            flex: 1;
+        }
+
+        .appt-loc-badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .appt-loc-badge.tarnovo {
+            background: var(--tarnovo-bg);
+            color: var(--tarnovo-text);
+        }
+
+        .appt-loc-badge.selo {
+            background: var(--selo-bg);
+            color: var(--selo-text);
+        }
+
+        .appt-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 6px;
+        }
+
+        .appt-tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .appt-tag.proc {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .appt-tag.price {
+            background: var(--selo-bg);
+            color: var(--selo-text);
+        }
+
+        .appt-notes {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: #f8fafc;
+            padding: 5px 8px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border-left: 3px solid #e2e8f0;
+        }
+
+        /* ═══════════════════════ APPOINTMENT ACTIONS ═══════════════════════════ */
+        .appt-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .appt-btn {
+            border: none;
+            padding: 8px 4px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            transition: all var(--transition);
+            text-decoration: none;
+            line-height: 1.2;
+        }
+
+        .appt-btn .btn-icon { font-size: 16px; line-height: 1; }
+
+        .appt-btn.viber {
+            background: #7360f2;
+            color: white;
+        }
+
+        .appt-btn.call {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .appt-btn.done {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .appt-btn.undone {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .appt-btn.edit {
+            background: #f3f4f6;
+            color: #555;
+        }
+
+        .appt-btn.delete {
+            background: #fdecea;
+            color: var(--danger);
+        }
+
+        .appt-btn:active { opacity: 0.7; transform: scale(0.95); }
+
+        /* ═══════════════════════════════ CARDS (upcoming mode) ═════════════════ */
         .container {
             padding: 4px 14px 0;
         }
@@ -448,58 +699,40 @@
             line-height: 1.4;
         }
 
+        /* Card actions — full row grid */
         .card-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
             margin-top: 12px;
             padding-top: 10px;
             border-top: 1px solid #f3f4f6;
         }
 
-        .actions-left, .actions-right {
-            display: flex;
-            gap: 6px;
-        }
-
         .action-btn {
             border: none;
-            padding: 7px 12px;
+            padding: 9px 4px;
             border-radius: 9px;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
             text-decoration: none;
-            display: inline-flex;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 3px;
             transition: all var(--transition);
+            line-height: 1.2;
         }
 
-        .action-btn.call {
-            background: #e8f0fe;
-            color: #1a73e8;
-        }
+        .action-btn .btn-icon { font-size: 16px; line-height: 1; }
 
-        .action-btn.done {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .action-btn.undone {
-            background: #fff3e0;
-            color: #e65100;
-        }
-
-        .action-btn.edit {
-            background: #f3f4f6;
-            color: var(--text-muted);
-        }
-
-        .action-btn.delete {
-            background: #fdecea;
-            color: var(--danger);
-        }
+        .action-btn.viber  { background: #7360f2; color: white; }
+        .action-btn.call   { background: #e8f0fe; color: #1a73e8; }
+        .action-btn.done   { background: #e8f5e9; color: #2e7d32; }
+        .action-btn.undone { background: #fff3e0; color: #e65100; }
+        .action-btn.edit   { background: #f3f4f6; color: #555; }
+        .action-btn.delete { background: #fdecea; color: var(--danger); }
 
         .action-btn:active { opacity: 0.7; transform: scale(0.97); }
 
@@ -619,7 +852,7 @@
 
         .close-btn:active { background: var(--primary-light); }
 
-        .form-group { margin-bottom: 14px; }
+        .form-group { margin-bottom: 14px; position: relative; }
 
         .form-group label {
             display: block;
@@ -713,6 +946,58 @@
 
         .save-btn:active { opacity: 0.85; transform: scale(0.99); }
 
+        /* ═══════════════════ CLIENT AUTOCOMPLETE ═══════════════════════════════ */
+        .client-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0; right: 0;
+            background: white;
+            border: 1.5px solid var(--primary);
+            border-top: none;
+            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+            z-index: 100;
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: var(--shadow-md);
+        }
+
+        .client-suggestion-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .client-suggestion-item:last-child { border-bottom: none; }
+
+        .client-suggestion-item:active,
+        .client-suggestion-item:hover {
+            background: var(--primary-light);
+        }
+
+        .client-sug-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            flex: 1;
+        }
+
+        .client-sug-phone {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .client-sug-visits {
+            font-size: 11px;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
         /* ═══════════════════════════════ INSTALL BANNER ═══════════════════════ */
         .install-banner {
             background: linear-gradient(135deg, #1a1a2e, #16213e);
@@ -791,16 +1076,6 @@
 
         body.offline .offline-banner { display: block; }
 
-        /* ═══════════════════════════════ RESPONSIVE ═══════════════════════════ */
-        @media (max-width: 360px) {
-            .header-title h1 { font-size: 17px; }
-            .action-btn { font-size: 12px; padding: 6px 9px; }
-        }
-
-        @media (prefers-color-scheme: dark) {
-            /* Keep light theme for this app - it's a nail salon app */
-        }
-
         /* ═══════════════════════════════ EARNINGS TAB ═════════════════════════ */
         .earnings-panel { display: none; padding: 14px 14px 0; }
         .earnings-panel.active { display: block; }
@@ -876,6 +1151,40 @@
         .breakdown-bar { height: 4px; background: linear-gradient(90deg, var(--accent), var(--primary-dark)); border-radius: 4px; transition: width 0.4s ease; }
 
         .no-earnings { text-align: center; padding: 30px; color: var(--text-muted); font-size: 14px; }
+
+        /* Current hour highlight */
+        .hour-row.is-current-hour {
+            background: linear-gradient(90deg, rgba(233,30,99,0.04), transparent);
+        }
+        .hour-row.is-current-hour .hour-label {
+            color: var(--primary);
+        }
+
+        /* Current time indicator */
+        .current-time-line {
+            position: absolute;
+            left: 46px;
+            right: 0;
+            height: 2px;
+            background: var(--primary);
+            z-index: 5;
+            pointer-events: none;
+        }
+        .current-time-line::before {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: -3px;
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        @media (max-width: 360px) {
+            .header-title h1 { font-size: 17px; }
+            .appt-btn, .action-btn { font-size: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -915,7 +1224,7 @@
 
 <div class="controls">
     <div class="view-mode-switch">
-        <button class="mode-btn active" id="mode-date"     onclick="setViewMode('date')">📅 По дата</button>
+        <button class="mode-btn active" id="mode-date"     onclick="setViewMode('date')">📅 По часове</button>
         <button class="mode-btn"        id="mode-upcoming" onclick="setViewMode('upcoming')">📋 Предстоящи</button>
         <button class="mode-btn"        id="mode-earnings" onclick="setViewMode('earnings')">💰 Приходи</button>
     </div>
@@ -931,7 +1240,7 @@
 
     <div class="search-wrap">
         <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" placeholder="Търси по име, телефон или бележка..." oninput="renderAppointments()">
+        <input type="text" id="searchInput" placeholder="Търси по клиентка, телефон..." oninput="renderAppointments()">
     </div>
 </div>
 
@@ -942,10 +1251,14 @@
     </div>
     <div class="stat-chip">
         <span class="stat-icon">💰</span>
-        <span id="priceStat">0 €</span>
+        <span id="priceStat">0 лв</span>
     </div>
 </div>
 
+<!-- Hour grid (date mode) -->
+<div class="hour-grid" id="hourGrid" style="display:none"></div>
+
+<!-- List container (upcoming/search mode) -->
 <div class="container" id="appointmentsList"></div>
 
 <!-- Earnings Panel -->
@@ -1028,9 +1341,11 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>Име на клиент</label>
-                <input type="text" id="formName" placeholder="Напр. Мария Иванова" required autocomplete="off">
+            <div class="form-group" id="nameGroup">
+                <label>Клиентка</label>
+                <input type="text" id="formName" placeholder="Напр. Мария" required autocomplete="off"
+                       oninput="showClientSuggestions()" onfocus="showClientSuggestions()" onblur="hideClientSuggestionsDelayed()">
+                <div class="client-suggestions" id="clientSuggestions" style="display:none"></div>
             </div>
 
             <div class="form-row">
@@ -1039,7 +1354,7 @@
                     <input type="tel" id="formPhone" placeholder="0888..." autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label>Цена (€)</label>
+                    <label>Цена (лв)</label>
                     <input type="number" id="formPrice" placeholder="50" step="1" min="0">
                 </div>
             </div>
@@ -1137,7 +1452,9 @@
     // Data layer — localStorage with validation
     // ═══════════════════════════════════════════════════════════════
     const STORAGE_KEY = 'nail_appointments_data_v1';
+    const CLIENTS_KEY = 'nail_clients_v1';
     let appointments = loadAppointments();
+    let clients = loadClients(); // { name, phone, visits }
     let currentLocationFilter = 'all';
     let currentViewMode = 'date';
 
@@ -1185,6 +1502,81 @@
     }
 
     // ═══════════════════════════════════════════════════════════════
+    // CLIENTS — remember clients by name + phone
+    // ═══════════════════════════════════════════════════════════════
+    function loadClients() {
+        try {
+            const saved = localStorage.getItem(CLIENTS_KEY);
+            return saved ? JSON.parse(saved) : {};
+        } catch { return {}; }
+    }
+
+    function saveClients() {
+        localStorage.setItem(CLIENTS_KEY, JSON.stringify(clients));
+    }
+
+    function upsertClient(name, phone) {
+        const key = name.trim().toLowerCase();
+        if (!key) return;
+        if (!clients[key]) {
+            clients[key] = { name: name.trim(), phone: phone || '', visits: 1 };
+        } else {
+            clients[key].visits = (clients[key].visits || 0) + 1;
+            if (phone) clients[key].phone = phone;
+            if (name.trim()) clients[key].name = name.trim();
+        }
+        saveClients();
+    }
+
+    function getClientSuggestions(query) {
+        if (!query || query.length < 1) return [];
+        const q = query.toLowerCase();
+        return Object.values(clients)
+            .filter(c => c.name.toLowerCase().includes(q))
+            .sort((a, b) => b.visits - a.visits)
+            .slice(0, 6);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // CLIENT AUTOCOMPLETE
+    // ═══════════════════════════════════════════════════════════════
+    function showClientSuggestions() {
+        const input = document.getElementById('formName');
+        const box = document.getElementById('clientSuggestions');
+        const query = input.value.trim();
+
+        // Also show all clients when empty (recent)
+        const list = query.length === 0
+            ? Object.values(clients).sort((a,b) => b.visits - a.visits).slice(0, 6)
+            : getClientSuggestions(query);
+
+        if (list.length === 0) { box.style.display = 'none'; return; }
+
+        box.innerHTML = list.map(c => `
+            <div class="client-suggestion-item" data-name="${escapeHtml(c.name)}" data-phone="${escapeHtml(c.phone || '')}">
+                <span class="client-sug-name">${escapeHtml(c.name)}</span>
+                ${c.phone ? `<span class="client-sug-phone">${escapeHtml(c.phone)}</span>` : ''}
+                <span class="client-sug-visits">${c.visits || 1}×</span>
+            </div>`).join('');
+
+        box.style.display = 'block';
+
+        box.querySelectorAll('.client-suggestion-item').forEach(item => {
+            item.addEventListener('mousedown', () => {
+                document.getElementById('formName').value  = item.dataset.name;
+                document.getElementById('formPhone').value = item.dataset.phone;
+                box.style.display = 'none';
+            });
+        });
+    }
+
+    function hideClientSuggestionsDelayed() {
+        setTimeout(() => {
+            document.getElementById('clientSuggestions').style.display = 'none';
+        }, 200);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
     // Date helpers
     // ═══════════════════════════════════════════════════════════════
     function getTodayString() {
@@ -1202,6 +1594,16 @@
             day: 'numeric',
             month: 'long'
         });
+    }
+
+    function formatBgDayName(dateStr) {
+        const date = new Date(dateStr + 'T00:00:00');
+        return date.toLocaleDateString('bg-BG', { weekday: 'long' });
+    }
+
+    function formatBgShortDate(dateStr) {
+        const date = new Date(dateStr + 'T00:00:00');
+        return date.toLocaleDateString('bg-BG', { day: 'numeric', month: 'long', year: 'numeric' });
     }
 
     document.getElementById('selectedDate').value = getTodayString();
@@ -1223,10 +1625,12 @@
         document.getElementById('mode-earnings').classList.toggle('active', mode === 'earnings');
 
         const isEarnings = mode === 'earnings';
+        const isDate = mode === 'date';
+
         document.getElementById('dateNavContainer').style.display = (mode === 'date') ? 'flex' : 'none';
-        document.getElementById('appointmentsList').style.display = isEarnings ? 'none' : '';
+        document.getElementById('hourGrid').style.display = isDate ? '' : 'none';
+        document.getElementById('appointmentsList').style.display = (!isDate && !isEarnings) ? '' : 'none';
         document.getElementById('earningsPanel').classList.toggle('active', isEarnings);
-        // hide stats bar when in earnings mode
         document.querySelector('.stats-bar').style.display = isEarnings ? 'none' : '';
 
         if (isEarnings) {
@@ -1255,9 +1659,179 @@
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // Render
+    // VIBER — send appointment info
     // ═══════════════════════════════════════════════════════════════
-    function renderAppointments() {
+    function sendViber(app) {
+        const BG_DAYS = ['Неделя','Понеделник','Вторник','Сряда','Четвъртък','Петък','Събота'];
+        const d = new Date(app.date + 'T00:00:00');
+        const dayName = BG_DAYS[d.getDay()];
+        const loc = app.location === 'tarnovo' ? '📍 Търново' : '🏡 На село';
+
+        let msg = `💅 Напомняне за час!\n`;
+        msg += `👤 ${app.name}\n`;
+        msg += `📅 ${dayName}, ${formatBgShortDate(app.date)}\n`;
+        msg += `🕒 ${app.time}\n`;
+        msg += `✨ ${app.procedure}\n`;
+        msg += `${loc}\n`;
+        if (app.price) msg += `💰 ${app.price} лв\n`;
+        if (app.notes) msg += `📝 ${app.notes}\n`;
+
+        const encoded = encodeURIComponent(msg);
+        // If phone is available open direct Viber chat
+        if (app.phone) {
+            const phone = app.phone.replace(/\D/g, '');
+            window.open(`viber://chat?number=%2B359${phone.replace(/^0/,'')}&text=${encoded}`, '_blank');
+        } else {
+            // Copy to clipboard and open Viber
+            navigator.clipboard && navigator.clipboard.writeText(msg).then(() => {
+                showToast('📋 Съобщението е копирано!');
+            });
+            window.open(`viber://forward?text=${encoded}`, '_blank');
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // RENDER — HOUR GRID (date mode)
+    // ═══════════════════════════════════════════════════════════════
+    const DAY_START = 8;  // 08:00
+    const DAY_END   = 22; // 22:00
+
+    function renderHourGrid() {
+        const gridEl = document.getElementById('hourGrid');
+        const selectedDate = document.getElementById('selectedDate').value;
+        const todayStr = getTodayString();
+        const isToday = selectedDate === todayStr;
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentMinute = now.getMinutes();
+        const searchQuery = document.getElementById('searchInput').value.trim().toLowerCase();
+
+        // Filter appointments for this date
+        let dayAppts = appointments.filter(app => {
+            if (currentLocationFilter !== 'all' && app.location !== currentLocationFilter) return false;
+            if (searchQuery) {
+                return app.date === selectedDate && (
+                    app.name.toLowerCase().includes(searchQuery) ||
+                    (app.phone || '').toLowerCase().includes(searchQuery) ||
+                    (app.notes || '').toLowerCase().includes(searchQuery)
+                );
+            }
+            return app.date === selectedDate;
+        }).sort((a, b) => a.time.localeCompare(b.time));
+
+        // Stats
+        const totalPrice = dayAppts.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
+        document.getElementById('countStat').textContent = `${dayAppts.length} часа`;
+        document.getElementById('priceStat').textContent = `${totalPrice} лв`;
+
+        // Day header
+        const dayNameStr = formatBgDayName(selectedDate);
+        const dateStr = formatBgShortDate(selectedDate);
+
+        let html = `
+            <div class="day-header-info">
+                <span class="day-name">${isToday ? '📌 Днес — ' : ''}${dayNameStr}</span>
+                <span class="day-date">${dateStr}</span>
+            </div>`;
+
+        // Build hour rows
+        for (let h = DAY_START; h <= DAY_END; h++) {
+            const hourStr = String(h).padStart(2, '0') + ':00';
+            const hourStr30 = String(h).padStart(2, '0') + ':30';
+
+            // Appointments in this hour (h:00 - h:59)
+            const appsInHour = dayAppts.filter(app => {
+                const appHour = parseInt(app.time.split(':')[0]);
+                return appHour === h;
+            });
+
+            const isCurrentHour = isToday && currentHour === h;
+            // Position of current time line within the hour (0-100%)
+            const timePercent = isCurrentHour ? Math.round((currentMinute / 60) * 100) : -1;
+
+            html += `<div class="hour-row ${isCurrentHour ? 'is-current-hour' : ''}" id="hour-${h}">`;
+            html += `<div class="hour-label ${isCurrentHour ? 'current-hour' : ''}">${hourStr}</div>`;
+            html += `<div class="hour-slots">`;
+
+            if (isCurrentHour && timePercent >= 0) {
+                html += `<div class="current-time-line" style="top:${timePercent}%"></div>`;
+            }
+
+            if (appsInHour.length === 0) {
+                // Empty slot — tap to add
+                html += `
+                    <div class="hour-empty">
+                        <button class="hour-add-btn" onclick="openModalAtTime('${selectedDate}', '${hourStr}')">
+                            <span>+</span> <span>Запиши час</span>
+                        </button>
+                    </div>`;
+            } else {
+                appsInHour.forEach(app => {
+                    html += renderApptSlot(app);
+                });
+            }
+
+            html += `</div></div>`;
+        }
+
+        gridEl.innerHTML = html;
+
+        // Scroll to current hour or first appointment
+        if (isToday && currentHour >= DAY_START && currentHour <= DAY_END) {
+            setTimeout(() => {
+                const el = document.getElementById(`hour-${currentHour}`);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        } else if (dayAppts.length > 0) {
+            const firstHour = parseInt(dayAppts[0].time.split(':')[0]);
+            const el = document.getElementById(`hour-${Math.max(firstHour, DAY_START)}`);
+            if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+        }
+    }
+
+    function renderApptSlot(app) {
+        const locClass = app.location === 'tarnovo' ? 'tarnovo' : 'selo';
+        const locLabel = app.location === 'tarnovo' ? '📍 Търново' : '🏡 На село';
+        const priceTag = app.price ? `<span class="appt-tag price">💰 ${escapeHtml(app.price)} лв</span>` : '';
+        const notesHtml = app.notes ? `<div class="appt-notes">📝 ${escapeHtml(app.notes)}</div>` : '';
+
+        const doneBtn = app.completed
+            ? `<button class="appt-btn undone" data-action="toggle" data-id="${escapeHtml(app.id)}"><span class="btn-icon">↩</span>Върни</button>`
+            : `<button class="appt-btn done" data-action="toggle" data-id="${escapeHtml(app.id)}"><span class="btn-icon">✔</span>Готово</button>`;
+
+        const callBtn = app.phone
+            ? `<a href="tel:${escapeHtml(app.phone)}" class="appt-btn call"><span class="btn-icon">📞</span>Обади</a>`
+            : `<button class="appt-btn call" style="opacity:0.35" disabled><span class="btn-icon">📞</span>Обади</button>`;
+
+        return `
+            <div class="appt-slot loc-${locClass} ${app.completed ? 'completed' : ''}">
+                <div class="appt-top">
+                    <span class="appt-time">🕒 ${escapeHtml(app.time)}</span>
+                    <span class="appt-name">${escapeHtml(app.name)}</span>
+                    <span class="appt-loc-badge ${locClass}">${locLabel}</span>
+                </div>
+                <div class="appt-details">
+                    <span class="appt-tag proc">💅 ${escapeHtml(app.procedure)}</span>
+                    ${priceTag}
+                </div>
+                ${notesHtml}
+                <div class="appt-actions">
+                    <button class="appt-btn viber" data-action="viber" data-id="${escapeHtml(app.id)}">
+                        <span class="btn-icon">💬</span>Вайбър
+                    </button>
+                    ${callBtn}
+                    ${doneBtn}
+                    <button class="appt-btn edit" data-action="edit" data-id="${escapeHtml(app.id)}">
+                        <span class="btn-icon">✏️</span>Промени
+                    </button>
+                </div>
+            </div>`;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // RENDER — LIST (upcoming / search mode)
+    // ═══════════════════════════════════════════════════════════════
+    function renderList() {
         const listEl = document.getElementById('appointmentsList');
         const selectedDate = document.getElementById('selectedDate').value;
         const searchQuery = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -1270,7 +1844,6 @@
                     || (app.phone || '').toLowerCase().includes(searchQuery)
                     || (app.notes || '').toLowerCase().includes(searchQuery);
             }
-            if (currentViewMode === 'date')     return app.date === selectedDate;
             if (currentViewMode === 'upcoming') return app.date >= todayStr;
             return true;
         });
@@ -1283,7 +1856,7 @@
         // Stats
         const totalPrice = filtered.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
         document.getElementById('countStat').textContent = `${filtered.length} часа`;
-        document.getElementById('priceStat').textContent = `${totalPrice} €`;
+        document.getElementById('priceStat').textContent = `${totalPrice} лв`;
 
         if (filtered.length === 0) {
             listEl.innerHTML = `
@@ -1299,24 +1872,24 @@
         let lastDate = '';
 
         filtered.forEach(app => {
-            if (currentViewMode === 'upcoming' || searchQuery) {
-                if (app.date !== lastDate) {
-                    const isToday = app.date === todayStr;
-                    html += `<div class="date-section-header">${isToday ? '📌 Днес — ' : '📅 '}${formatBgDate(app.date)}</div>`;
-                    lastDate = app.date;
-                }
+            if (app.date !== lastDate) {
+                const isToday = app.date === todayStr;
+                html += `<div class="date-section-header">${isToday ? '📌 Днес — ' : '📅 '}${formatBgDate(app.date)}</div>`;
+                lastDate = app.date;
             }
 
             const locLabel = app.location === 'tarnovo' ? '📍 Търново' : '🏡 На село';
             const locClass = app.location === 'tarnovo' ? 'tarnovo' : 'selo';
-            const priceTag = app.price ? `<span class="tag price">💰 ${escapeHtml(app.price)} €</span>` : '';
+            const priceTag = app.price ? `<span class="tag price">💰 ${escapeHtml(app.price)} лв</span>` : '';
             const notesHtml = app.notes ? `<div class="card-notes">📝 ${escapeHtml(app.notes)}</div>` : '';
-            const callBtn = app.phone
-                ? `<a href="tel:${escapeHtml(app.phone)}" class="action-btn call">📞 Обади се</a>`
-                : '';
+
             const doneBtn = app.completed
-                ? `<button class="action-btn undone" data-action="toggle" data-id="${escapeHtml(app.id)}">↩ Върни</button>`
-                : `<button class="action-btn done"   data-action="toggle" data-id="${escapeHtml(app.id)}">✔ Готово</button>`;
+                ? `<button class="action-btn undone" data-action="toggle" data-id="${escapeHtml(app.id)}"><span class="btn-icon">↩</span>Върни</button>`
+                : `<button class="action-btn done" data-action="toggle" data-id="${escapeHtml(app.id)}"><span class="btn-icon">✔</span>Готово</button>`;
+
+            const callBtn = app.phone
+                ? `<a href="tel:${escapeHtml(app.phone)}" class="action-btn call"><span class="btn-icon">📞</span>Обади</a>`
+                : ``;
 
             html += `
                 <div class="card loc-${locClass} ${app.completed ? 'completed' : ''}">
@@ -1331,19 +1904,27 @@
                     </div>
                     ${notesHtml}
                     <div class="card-actions">
-                        <div class="actions-left">
-                            ${callBtn}
-                            ${doneBtn}
-                        </div>
-                        <div class="actions-right">
-                            <button class="action-btn edit"   data-action="edit"   data-id="${escapeHtml(app.id)}">✏️</button>
-                            <button class="action-btn delete" data-action="delete" data-id="${escapeHtml(app.id)}">🗑️</button>
-                        </div>
+                        <button class="action-btn viber" data-action="viber" data-id="${escapeHtml(app.id)}">
+                            <span class="btn-icon">💬</span>Вайбър
+                        </button>
+                        ${callBtn || `<span></span>`}
+                        ${doneBtn}
+                        <button class="action-btn edit" data-action="edit" data-id="${escapeHtml(app.id)}">
+                            <span class="btn-icon">✏️</span>Промени
+                        </button>
                     </div>
                 </div>`;
         });
 
         listEl.innerHTML = html;
+    }
+
+    function renderAppointments() {
+        if (currentViewMode === 'date') {
+            renderHourGrid();
+        } else {
+            renderList();
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -1357,6 +1938,7 @@
 
     function openModal(editItem = null) {
         document.getElementById('appointmentForm').reset();
+        document.getElementById('clientSuggestions').style.display = 'none';
 
         if (editItem) {
             document.getElementById('modalTitle').textContent = 'Редактирай час';
@@ -1382,8 +1964,15 @@
         setTimeout(() => document.getElementById('formName').focus(), 300);
     }
 
+    function openModalAtTime(date, time) {
+        openModal();
+        document.getElementById('formDate').value = date;
+        document.getElementById('formTime').value = time;
+    }
+
     function closeModal() {
         document.getElementById('modalOverlay').classList.remove('open');
+        document.getElementById('clientSuggestions').style.display = 'none';
     }
 
     function closeModalOnOutsideClick(e) {
@@ -1417,8 +2006,12 @@
             appointments.push(itemData);
         }
 
+        // Remember client
+        upsertClient(itemData.name, itemData.phone);
+
         saveToStorage();
         document.getElementById('selectedDate').value = itemData.date;
+        setViewMode('date');
         closeModal();
         renderAppointments();
         showToast(editId ? '✏️ Часът е обновен!' : '✅ Часът е записан!');
@@ -1499,16 +2092,23 @@
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // Event delegation for card actions
+    // Event delegation for card / slot actions
     // ═══════════════════════════════════════════════════════════════
-    document.getElementById('appointmentsList').addEventListener('click', function(event) {
+    function handleCardAction(event) {
         const button = event.target.closest('[data-action]');
         if (!button) return;
         const { action, id } = button.dataset;
         if (action === 'toggle') toggleCompleted(id);
         if (action === 'edit')   editAppointment(id);
         if (action === 'delete') deleteAppointment(id);
-    });
+        if (action === 'viber') {
+            const app = appointments.find(a => a.id === id);
+            if (app) sendViber(app);
+        }
+    }
+
+    document.getElementById('appointmentsList').addEventListener('click', handleCardAction);
+    document.getElementById('hourGrid').addEventListener('click', handleCardAction);
 
     // Swipe to close modal
     let touchStartY = 0;
@@ -1523,13 +2123,13 @@
     // ═══════════════════════════════════════════════════════════════
     // Initial render
     // ═══════════════════════════════════════════════════════════════
-    renderAppointments();
+    setViewMode('date');
 
     // ═══════════════════════════════════════════════════════════════
     // EARNINGS — state
     // ═══════════════════════════════════════════════════════════════
     let earningsYear = new Date().getFullYear();
-    let selectedEarningsMonth = null; // null = use range; number 0-11 = month index
+    let selectedEarningsMonth = null;
 
     const BG_MONTHS = [
         'Януари','Февруари','Март','Април','Май','Юни',
@@ -1540,25 +2140,17 @@
         return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    // EARNINGS — year navigation
-    // ═══════════════════════════════════════════════════════════════
     function changeEarningsYear(delta) {
         earningsYear += delta;
         document.getElementById('earningsYearLabel').textContent = earningsYear;
         selectedEarningsMonth = null;
         renderMonthGrid();
-        // clear range when changing year
         document.getElementById('rangeFrom').value = '';
         document.getElementById('rangeTo').value = '';
         document.getElementById('earningsResult').innerHTML = '';
-        // remove active preset
         document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    // EARNINGS — month grid
-    // ═══════════════════════════════════════════════════════════════
     function renderMonthGrid() {
         document.getElementById('earningsYearLabel').textContent = earningsYear;
         const today = new Date();
@@ -1582,7 +2174,7 @@
                 <div class="month-card ${isSelected ? 'selected' : ''} ${isCurrent ? 'current-month' : ''}"
                      onclick="selectMonth(${m})">
                     <div class="month-card-name">${BG_MONTHS[m]}</div>
-                    <div class="month-card-amount ${total > 0 ? 'has-income' : ''}">${total > 0 ? total + ' €' : '—'}</div>
+                    <div class="month-card-amount ${total > 0 ? 'has-income' : ''}">${total > 0 ? total + ' лв' : '—'}</div>
                     <div class="month-card-count">${count > 0 ? count + ' часа' : ''}</div>
                 </div>`;
         }
@@ -1593,7 +2185,6 @@
         selectedEarningsMonth = monthIndex;
         renderMonthGrid();
 
-        // Set range to that month
         const year = earningsYear;
         const m = monthIndex;
         const firstDay = getDateString(new Date(year, m, 1));
@@ -1601,14 +2192,10 @@
         document.getElementById('rangeFrom').value = firstDay;
         document.getElementById('rangeTo').value   = lastDay;
 
-        // clear preset highlights
         document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
         renderEarnings();
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    // EARNINGS — range presets
-    // ═══════════════════════════════════════════════════════════════
     function setPreset(key) {
         selectedEarningsMonth = null;
         renderMonthGrid();
@@ -1616,7 +2203,7 @@
         let from, to;
 
         if (key === 'week') {
-            const day = today.getDay() === 0 ? 6 : today.getDay() - 1; // Monday start
+            const day = today.getDay() === 0 ? 6 : today.getDay() - 1;
             from = new Date(today); from.setDate(today.getDate() - day);
             to   = new Date(today);
         } else if (key === 'month') {
@@ -1640,7 +2227,6 @@
         document.getElementById('rangeFrom').value = getDateString(from);
         document.getElementById('rangeTo').value   = getDateString(to);
 
-        // highlight active preset
         document.querySelectorAll('.preset-btn').forEach(b => {
             b.classList.toggle('active-preset', b.textContent.trim() === {
                 week: 'Тази седмица', month: 'Този месец',
@@ -1650,9 +2236,6 @@
         renderEarnings();
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    // EARNINGS — main render
-    // ═══════════════════════════════════════════════════════════════
     function renderEarnings() {
         const fromVal = document.getElementById('rangeFrom').value;
         const toVal   = document.getElementById('rangeTo').value;
@@ -1670,7 +2253,6 @@
 
         const filtered = appointments.filter(a => a.price && a.date >= fromVal && a.date <= toVal);
 
-        // From-to label
         const fromDate = new Date(fromVal + 'T00:00:00');
         const toDate   = new Date(toVal   + 'T00:00:00');
         const periodLabel = fromVal === toVal
@@ -1684,19 +2266,17 @@
             el.innerHTML = `
                 <div class="earnings-summary">
                     <div class="summary-label">${periodLabel}</div>
-                    <div class="summary-total">0 €</div>
+                    <div class="summary-total">0 лв</div>
                     <div class="summary-meta"><span>📋 Няма часове с цена</span></div>
                 </div>`;
             return;
         }
 
-        // Location split
         const tarFilter = filtered.filter(a => a.location === 'tarnovo');
         const seloFilter = filtered.filter(a => a.location === 'selo');
         const tarTotal  = tarFilter.reduce((s, a) => s + (Number(a.price) || 0), 0);
         const seloTotal = seloFilter.reduce((s, a) => s + (Number(a.price) || 0), 0);
 
-        // Procedure breakdown
         const procMap = {};
         filtered.forEach(a => {
             if (!procMap[a.procedure]) procMap[a.procedure] = { count: 0, total: 0 };
@@ -1711,7 +2291,7 @@
                 <div class="breakdown-top">
                     <span class="breakdown-name">${escapeHtml(name)}</span>
                     <span class="breakdown-count">${data.count}×</span>
-                    <span class="breakdown-amount">${data.total} €</span>
+                    <span class="breakdown-amount">${data.total} лв</span>
                 </div>
                 <div class="breakdown-bar-wrap">
                     <div class="breakdown-bar" style="width:${Math.round(data.total/maxProc*100)}%"></div>
@@ -1721,10 +2301,10 @@
         el.innerHTML = `
             <div class="earnings-summary">
                 <div class="summary-label">${periodLabel}</div>
-                <div class="summary-total">${total} €</div>
+                <div class="summary-total">${total} лв</div>
                 <div class="summary-meta">
                     <span>📋 ${filtered.length} часа</span>
-                    <span>📊 Средно ${avgPer} €/час</span>
+                    <span>📊 Средно ${avgPer} лв/час</span>
                 </div>
             </div>
 
@@ -1732,13 +2312,13 @@
                 <div class="split-card tarnovo">
                     <div class="split-icon">📍</div>
                     <div class="split-label">Търново</div>
-                    <div class="split-amount">${tarTotal} €</div>
+                    <div class="split-amount">${tarTotal} лв</div>
                     <div class="split-count">${tarFilter.length} часа</div>
                 </div>
                 <div class="split-card selo">
                     <div class="split-icon">🏡</div>
                     <div class="split-label">На село</div>
-                    <div class="split-amount">${seloTotal} €</div>
+                    <div class="split-amount">${seloTotal} лв</div>
                     <div class="split-count">${seloFilter.length} часа</div>
                 </div>
             </div>
