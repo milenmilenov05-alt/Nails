@@ -1,0 +1,35 @@
+{
+  "name": "График Нокти",
+  "short_name": "Нокти",
+  "description": "Приложение за записване на часове за маникюр",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fdf2f8",
+  "theme_color": "#db2777",
+  "orientation": "portrait-primary",
+  "lang": "bg",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "Нов час",
+      "short_name": "Нов час",
+      "description": "Добави нов час",
+      "url": "./index.html#new",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
