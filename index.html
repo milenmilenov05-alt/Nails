@@ -7,15 +7,15 @@
     <!-- PWA meta tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Нокти">
+    <meta name="apple-mobile-web-app-title" content="График Нокти">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#c2185b">
-    <meta name="description" content="График за маникюр - записване на часове офлайн">
+    <meta name="description" content="График за маникюр с визуализация на дупки и часове от 8 до 22">
 
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
 
-    <title>💅 График Нокти</title>
+    <title>💅 График Нокти (8:00 - 22:00)</title>
 
     <style>
         :root {
@@ -24,30 +24,37 @@
             --primary-light:  #fce4ec;
             --primary-mid:    #f48fb1;
             --accent:         #e91e63;
-            --bg:             #fff5f9;
+            --bg:             #fff7fa;
             --card-bg:        #ffffff;
-            --surface:        #fce4ec;
-            --text:           #212121;
-            --text-muted:     #757575;
-            --text-on-primary:#ffffff;
+            --text:           #1f2937;
+            --text-muted:     #6b7280;
             --tarnovo-bg:     #ede7f6;
             --tarnovo-text:   #4527a0;
             --tarnovo-accent: #7c4dff;
             --selo-bg:        #e8f5e9;
             --selo-text:      #1b5e20;
             --selo-accent:    #00c853;
-            --danger:         #f44336;
-            --success:        #4caf50;
-            --warning:        #ff9800;
+            --danger:         #e53935;
+            --danger-bg:      #ffebee;
+            --success:        #2e7d32;
+            --success-bg:     #e8f5e9;
+            --warning:        #ed6c02;
+            --warning-bg:     #fff4e5;
+            --viber:          #7360f2;
+            --viber-bg:       #f0eeff;
+            --gap-bg:         #f0fdf4;
+            --gap-border:     #86efac;
+            --gap-text:       #166534;
             --border:         #f8bbd0;
-            --shadow-sm:      0 1px 4px rgba(194,24,91,0.08);
-            --shadow-md:      0 4px 16px rgba(194,24,91,0.12);
-            --shadow-lg:      0 8px 32px rgba(194,24,91,0.18);
+            --border-light:   #fce4ec;
+            --shadow-sm:      0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md:      0 4px 14px rgba(194,24,91,0.12);
+            --shadow-lg:      0 8px 26px rgba(194,24,91,0.18);
             --radius-sm:      10px;
             --radius-md:      16px;
             --radius-lg:      22px;
             --radius-xl:      28px;
-            --transition:     0.2s cubic-bezier(0.4,0,0.2,1);
+            --transition:     0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -63,7 +70,7 @@
         body {
             background: var(--bg);
             color: var(--text);
-            padding-bottom: 100px;
+            padding-bottom: 110px;
             min-height: 100vh;
             overscroll-behavior-y: none;
         }
@@ -72,10 +79,10 @@
         header {
             background: linear-gradient(135deg, var(--accent) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 14px 16px 0;
+            padding: 12px 16px 0;
             position: sticky;
             top: 0;
-            z-index: 20;
+            z-index: 25;
             box-shadow: 0 4px 20px rgba(194,24,91,0.3);
         }
 
@@ -83,7 +90,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
 
         .header-title {
@@ -94,12 +101,12 @@
 
         .header-title h1 {
             font-size: 20px;
-            font-weight: 800;
+            font-weight: 900;
             letter-spacing: -0.3px;
         }
 
         .pwa-badge {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.25);
             font-size: 10px;
             font-weight: 700;
             padding: 2px 7px;
@@ -114,12 +121,12 @@
         }
 
         .icon-btn {
-            background: rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.2);
             border: none;
             color: white;
             width: 36px;
             height: 36px;
-            border-radius: 12px;
+            border-radius: 10px;
             font-size: 16px;
             cursor: pointer;
             display: flex;
@@ -135,7 +142,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 5px;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.22);
             padding: 4px;
             border-radius: var(--radius-md) var(--radius-md) 0 0;
             margin-top: 4px;
@@ -144,14 +151,13 @@
         .loc-tab {
             border: none;
             background: transparent;
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.85);
             padding: 9px 4px;
             border-radius: 10px;
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             transition: all var(--transition);
-            letter-spacing: 0.1px;
         }
 
         .loc-tab.active {
@@ -163,35 +169,36 @@
         /* ═══════════════════════════════ CONTROLS ═══════════════════════════ */
         .controls {
             background: white;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-bottom: 1px solid #f3f4f6;
             position: sticky;
-            top: 108px;
-            z-index: 15;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            top: 98px;
+            z-index: 20;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
 
         .view-mode-switch {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 10px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
             background: #f3f4f6;
             padding: 4px;
             border-radius: var(--radius-sm);
         }
 
         .mode-btn {
-            flex: 1;
-            padding: 7px 4px;
+            padding: 7px 2px;
             border-radius: 8px;
             border: none;
             background: transparent;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-muted);
             cursor: pointer;
             transition: all var(--transition);
             white-space: nowrap;
+            text-align: center;
         }
 
         .mode-btn.active {
@@ -209,8 +216,8 @@
         .nav-arrow {
             background: #f3f4f6;
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: var(--radius-sm);
             font-size: 18px;
             color: var(--text);
@@ -224,18 +231,15 @@
 
         .nav-arrow:active { background: var(--primary-light); }
 
-        .date-input-wrap {
-            flex: 1;
-            position: relative;
-        }
+        .date-input-wrap { flex: 1; }
 
         .date-input-wrap input[type="date"] {
             width: 100%;
-            height: 40px;
+            height: 38px;
             border: 1.5px solid #e5e7eb;
             border-radius: var(--radius-sm);
-            padding: 0 12px;
-            font-size: 15px;
+            padding: 0 10px;
+            font-size: 14px;
             font-weight: 700;
             color: var(--text);
             background: #f9fafb;
@@ -247,11 +251,11 @@
             background: var(--primary-light);
             color: var(--primary);
             border: none;
-            padding: 0 14px;
-            height: 40px;
+            padding: 0 12px;
+            height: 38px;
             border-radius: var(--radius-sm);
             font-size: 13px;
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
             white-space: nowrap;
             transition: background var(--transition);
@@ -260,7 +264,7 @@
         .today-pill:active { background: var(--primary-mid); color: white; }
 
         .search-wrap {
-            margin-top: 10px;
+            margin-top: 8px;
             position: relative;
         }
 
@@ -270,16 +274,16 @@
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-muted);
-            font-size: 15px;
+            font-size: 14px;
             pointer-events: none;
         }
 
         .search-wrap input {
             width: 100%;
-            padding: 9px 12px 9px 36px;
+            padding: 8px 12px 8px 34px;
             border-radius: var(--radius-sm);
             border: 1.5px solid #e5e7eb;
-            font-size: 14px;
+            font-size: 13px;
             background: #f9fafb;
             transition: border-color var(--transition);
         }
@@ -290,11 +294,12 @@
             background: white;
         }
 
-        /* ═══════════════════════════════ STATS ═══════════════════════════════ */
+        /* ═══════════════════════════════ STATS BAR ═══════════════════════════ */
         .stats-bar {
             display: flex;
             justify-content: space-between;
-            padding: 10px 16px 8px;
+            align-items: center;
+            padding: 8px 14px 4px;
             gap: 8px;
         }
 
@@ -307,280 +312,432 @@
             border-radius: 20px;
             padding: 5px 12px;
             font-size: 13px;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--primary);
             box-shadow: var(--shadow-sm);
         }
 
-        .stat-chip .stat-icon { font-size: 14px; }
-
-        /* ═══════════════════════════════ HOUR GRID ═════════════════════════════ */
-        .hour-grid {
-            padding: 0 12px 10px;
+        .day-hours-badge {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 800;
+            background: #f3f4f6;
+            padding: 4px 9px;
+            border-radius: 12px;
         }
 
-        .day-header-info {
+        /* ═══════════════════════════════ SCHEDULE VIEW (08:00 - 22:00) ═══════════════════════════ */
+        .schedule-container {
+            padding: 6px 12px 20px;
+        }
+
+        .day-title-card {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 4px 12px;
-            border-bottom: 2px solid var(--border);
-            margin-bottom: 4px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
         }
 
-        .day-header-info .day-name {
+        .day-title-card .day-main {
             font-size: 16px;
             font-weight: 900;
             color: var(--primary);
             text-transform: capitalize;
         }
 
-        .day-header-info .day-date {
-            font-size: 13px;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .hour-row {
-            display: flex;
-            align-items: stretch;
-            min-height: 52px;
-            border-bottom: 1px solid #f3e8f0;
-            position: relative;
-        }
-
-        .hour-row:last-child { border-bottom: none; }
-
-        .hour-label {
-            width: 46px;
-            flex-shrink: 0;
+        .day-title-card .day-sub {
             font-size: 12px;
+            color: var(--text-muted);
             font-weight: 700;
-            color: var(--text-muted);
-            padding: 8px 6px 0 0;
-            text-align: right;
-            line-height: 1;
-            border-right: 2px solid var(--border);
         }
 
-        .hour-label.current-hour {
-            color: var(--primary);
-            font-size: 13px;
+        /* 🟢 GAPS SUMMARY BAR (ДУПКИ ЗА ДЕНЯ) */
+        .gaps-summary-box {
+            background: #ecfdf5;
+            border: 1.5px solid #a7f3d0;
+            border-radius: var(--radius-md);
+            padding: 9px 12px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
         }
 
-        .hour-slots {
-            flex: 1;
-            padding: 4px 0 4px 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .hour-empty {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            min-height: 44px;
-        }
-
-        .hour-add-btn {
-            background: none;
-            border: 1.5px dashed #f8bbd0;
-            border-radius: 8px;
-            color: #f48fb1;
-            font-size: 12px;
-            font-weight: 600;
-            padding: 6px 12px;
-            cursor: pointer;
-            width: 100%;
-            text-align: left;
-            transition: all var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .hour-add-btn:active {
-            background: var(--primary-light);
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        /* ═══════════════════════════════ APPOINTMENT SLOT ══════════════════════ */
-        .appt-slot {
-            background: white;
-            border-radius: 10px;
-            padding: 8px 10px;
-            border: 1.5px solid #f3e8f0;
-            box-shadow: 0 1px 6px rgba(194,24,91,0.08);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .appt-slot::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; bottom: 0;
-            width: 4px;
-            background: var(--primary);
-            border-radius: 4px 0 0 4px;
-        }
-
-        .appt-slot.loc-tarnovo::before { background: var(--tarnovo-accent); }
-        .appt-slot.loc-selo::before    { background: var(--selo-accent); }
-
-        .appt-slot.completed {
-            opacity: 0.5;
-            background: #f9fafb;
-        }
-
-        .appt-top {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 5px;
-        }
-
-        .appt-time {
-            font-size: 13px;
-            font-weight: 900;
-            color: var(--primary);
-            min-width: 38px;
-        }
-
-        .appt-name {
-            font-size: 15px;
+        .gaps-summary-header {
+            font-size: 11px;
             font-weight: 800;
-            color: var(--text);
-            flex: 1;
-        }
-
-        .appt-loc-badge {
-            font-size: 10px;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 12px;
-        }
-
-        .appt-loc-badge.tarnovo {
-            background: var(--tarnovo-bg);
-            color: var(--tarnovo-text);
-        }
-
-        .appt-loc-badge.selo {
-            background: var(--selo-bg);
-            color: var(--selo-text);
-        }
-
-        .appt-details {
+            color: #065f46;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 6px;
         }
 
-        .appt-tag {
+        .gaps-pills-row {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+            scrollbar-width: none;
+        }
+
+        .gaps-pills-row::-webkit-scrollbar { display: none; }
+
+        .gap-pill {
+            background: white;
+            border: 1px solid #6ee7b7;
+            color: #047857;
+            padding: 5px 10px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 800;
+            white-space: nowrap;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all var(--transition);
+        }
+
+        .gap-pill:active {
+            background: #10b981;
+            color: white;
+            transform: scale(0.97);
+        }
+
+        /* TIMELINE STREAM (08:00 to 22:00) */
+        .timeline-stream {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* 🟢 GAP CARD (ДУПКА В ГРАФИКА) */
+        .gap-card {
+            background: var(--gap-bg);
+            border: 1.5px dashed var(--gap-border);
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .gap-card:active {
+            background: #dcfce7;
+            border-color: #22c55e;
+            transform: scale(0.99);
+        }
+
+        .gap-card-left {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .gap-card-title {
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--gap-text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .gap-card-time {
+            font-size: 12px;
+            color: #15803d;
+            font-weight: 700;
+        }
+
+        .gap-card-btn {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 6px rgba(34,197,94,0.3);
+            white-space: nowrap;
+        }
+
+        /* 💅 APPOINTMENT CARD */
+        .appt-card {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 12px 14px 10px;
+            border: 1px solid #f3e8f0;
+            box-shadow: 0 2px 8px rgba(194,24,91,0.08);
+            position: relative;
+            overflow: hidden;
+            transition: transform var(--transition);
+        }
+
+        .appt-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: var(--primary);
+        }
+
+        .appt-card.loc-tarnovo::before { background: var(--tarnovo-accent); }
+        .appt-card.loc-selo::before    { background: var(--selo-accent); }
+
+        .appt-card.completed {
+            background: #fafafa;
+            opacity: 0.65;
+        }
+
+        .appt-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+
+        .appt-client-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .appt-client-name {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .appt-time-span {
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .appt-badges {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .appt-badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 14px;
+            letter-spacing: 0.2px;
+        }
+
+        .appt-badge.tarnovo { background: var(--tarnovo-bg); color: var(--tarnovo-text); }
+        .appt-badge.selo    { background: var(--selo-bg); color: var(--selo-text); }
+
+        .appt-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .chip {
             font-size: 11px;
             font-weight: 700;
             padding: 3px 8px;
             border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        .appt-tag.proc {
-            background: var(--primary-light);
-            color: var(--primary);
-        }
+        .chip.proc  { background: var(--primary-light); color: var(--primary); }
+        .chip.dur   { background: #e0f2fe; color: #0369a1; }
+        .chip.price { background: var(--selo-bg); color: var(--selo-text); }
 
-        .appt-tag.price {
-            background: var(--selo-bg);
-            color: var(--selo-text);
-        }
-
-        .appt-notes {
+        .appt-notes-box {
             font-size: 12px;
-            color: var(--text-muted);
+            color: #555;
             background: #f8fafc;
-            padding: 5px 8px;
+            padding: 6px 9px;
             border-radius: 6px;
-            margin-bottom: 6px;
-            border-left: 3px solid #e2e8f0;
+            border-left: 3px solid #cbd5e1;
+            margin-bottom: 8px;
+            line-height: 1.35;
         }
 
-        /* ═══════════════════════ APPOINTMENT ACTIONS ═══════════════════════════ */
-        .appt-actions {
+        /* 5 ACTION BUTTONS GRID */
+        .appt-buttons-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 5px;
+            grid-template-columns: 1.3fr 1fr 1fr 0.9fr 0.8fr;
+            gap: 4px;
             margin-top: 6px;
             padding-top: 6px;
             border-top: 1px solid #f3f4f6;
         }
 
-        .appt-btn {
+        .btn-action {
             border: none;
-            padding: 8px 4px;
+            padding: 7px 4px;
             border-radius: 8px;
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
-            transition: all var(--transition);
+            justify-content: center;
+            gap: 2px;
             text-decoration: none;
-            line-height: 1.2;
+            line-height: 1.1;
+            transition: all var(--transition);
         }
 
-        .appt-btn .btn-icon { font-size: 16px; line-height: 1; }
+        .btn-action .b-icon { font-size: 15px; }
 
-        .appt-btn.viber {
-            background: #7360f2;
-            color: white;
+        .btn-action.viber { background: var(--viber); color: white; }
+        .btn-action.call  { background: #e8f0fe; color: #1976d2; }
+        .btn-action.call.disabled { opacity: 0.35; pointer-events: none; }
+        .btn-action.done  { background: var(--success-bg); color: var(--success); }
+        .btn-action.undone{ background: var(--warning-bg); color: var(--warning); }
+        .btn-action.edit  { background: #f3f4f6; color: #4b5563; }
+        .btn-action.delete{ background: var(--danger-bg); color: var(--danger); }
+
+        .btn-action:active {
+            transform: scale(0.96);
+            opacity: 0.8;
         }
 
-        .appt-btn.call {
-            background: #e8f0fe;
-            color: #1a73e8;
+        /* ═══════════════════════════════ CLIENTS TAB ═══════════════════════════ */
+        .clients-panel { display: none; padding: 10px 14px 20px; }
+        .clients-panel.active { display: block; }
+
+        .clients-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
         }
 
-        .appt-btn.done {
-            background: #e8f5e9;
-            color: #2e7d32;
+        .clients-count {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--primary);
         }
 
-        .appt-btn.undone {
-            background: #fff3e0;
-            color: #e65100;
+        .btn-add-client {
+            background: var(--primary-light);
+            color: var(--primary);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
         }
 
-        .appt-btn.edit {
-            background: #f3f4f6;
-            color: #555;
+        .clients-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .appt-btn.delete {
-            background: #fdecea;
-            color: var(--danger);
+        .client-card {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #f3e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
-        .appt-btn:active { opacity: 0.7; transform: scale(0.95); }
-
-        /* ═══════════════════════════════ CARDS (upcoming mode) ═════════════════ */
-        .container {
-            padding: 4px 14px 0;
+        .client-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+
+        .client-card-name {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--text);
+        }
+
+        .client-card-visits {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 12px;
+        }
+
+        .client-card-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .client-card-actions {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 0.6fr;
+            gap: 6px;
+            margin-top: 4px;
+            padding-top: 8px;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .cca-btn {
+            border: none;
+            padding: 7px 4px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            text-decoration: none;
+            transition: all var(--transition);
+        }
+
+        .cca-btn.book  { background: var(--primary); color: white; }
+        .cca-btn.viber { background: var(--viber); color: white; }
+        .cca-btn.call  { background: #e8f0fe; color: #1976d2; }
+        .cca-btn.del   { background: var(--danger-bg); color: var(--danger); }
+
+        /* ═══════════════════════════════ UPCOMING LIST ═══════════════════════════ */
+        .container { padding: 6px 14px 20px; }
 
         .date-section-header {
             display: flex;
             align-items: center;
             gap: 8px;
             font-size: 13px;
-            font-weight: 800;
+            font-weight: 900;
             color: var(--primary);
             margin: 14px 2px 8px;
             text-transform: capitalize;
-            letter-spacing: 0.3px;
         }
 
         .date-section-header::after {
@@ -591,165 +748,20 @@
             border-radius: 2px;
         }
 
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--radius-md);
-            padding: 14px;
-            margin-bottom: 10px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid #f3e8ff22;
-            position: relative;
-            overflow: hidden;
-            transition: transform var(--transition), box-shadow var(--transition);
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; bottom: 0;
-            width: 4px;
-            background: var(--primary);
-            border-radius: 4px 0 0 4px;
-        }
-
-        .card.loc-tarnovo::before { background: var(--tarnovo-accent); }
-        .card.loc-selo::before    { background: var(--selo-accent); }
-
-        .card.completed {
-            opacity: 0.55;
-            background: #f9fafb;
-        }
-
-        .card:active { transform: scale(0.99); }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .time-badge {
-            font-size: 18px;
-            font-weight: 900;
-            color: var(--text);
-            letter-spacing: -0.5px;
-        }
-
-        .loc-badge {
-            font-size: 11px;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 20px;
-            letter-spacing: 0.2px;
-        }
-
-        .loc-badge.tarnovo {
-            background: var(--tarnovo-bg);
-            color: var(--tarnovo-text);
-        }
-
-        .loc-badge.selo {
-            background: var(--selo-bg);
-            color: var(--selo-text);
-        }
-
-        .client-name {
-            font-size: 17px;
-            font-weight: 800;
-            margin-bottom: 6px;
-            color: var(--text);
-        }
-
-        .tags-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-bottom: 4px;
-        }
-
-        .tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 12px;
-            font-weight: 700;
-            padding: 4px 9px;
-            border-radius: 7px;
-        }
-
-        .tag.procedure {
-            color: var(--primary);
-            background: var(--primary-light);
-        }
-
-        .tag.price {
-            color: var(--selo-text);
-            background: var(--selo-bg);
-        }
-
-        .card-notes {
-            font-size: 13px;
-            color: var(--text-muted);
-            background: #f8fafc;
-            padding: 7px 10px;
-            border-radius: 8px;
-            margin-top: 8px;
-            border-left: 3px solid #e2e8f0;
-            line-height: 1.4;
-        }
-
-        /* Card actions — full row grid */
-        .card-actions {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            margin-top: 12px;
-            padding-top: 10px;
-            border-top: 1px solid #f3f4f6;
-        }
-
-        .action-btn {
-            border: none;
-            padding: 9px 4px;
-            border-radius: 9px;
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            transition: all var(--transition);
-            line-height: 1.2;
-        }
-
-        .action-btn .btn-icon { font-size: 16px; line-height: 1; }
-
-        .action-btn.viber  { background: #7360f2; color: white; }
-        .action-btn.call   { background: #e8f0fe; color: #1a73e8; }
-        .action-btn.done   { background: #e8f5e9; color: #2e7d32; }
-        .action-btn.undone { background: #fff3e0; color: #e65100; }
-        .action-btn.edit   { background: #f3f4f6; color: #555; }
-        .action-btn.delete { background: #fdecea; color: var(--danger); }
-
-        .action-btn:active { opacity: 0.7; transform: scale(0.97); }
-
         /* ═══════════════════════════════ EMPTY STATE ══════════════════════════ */
         .empty-state {
             text-align: center;
-            padding: 50px 20px;
+            padding: 40px 20px;
             color: var(--text-muted);
         }
 
         .empty-state .empty-emoji {
-            font-size: 52px;
-            margin-bottom: 10px;
+            font-size: 50px;
+            margin-bottom: 8px;
             display: block;
         }
 
-        .empty-state p { font-size: 15px; margin-top: 6px; }
+        .empty-state p { font-size: 14px; margin-top: 4px; }
 
         /* ═══════════════════════════════ FAB ══════════════════════════════════ */
         .fab {
@@ -759,31 +771,21 @@
             background: linear-gradient(135deg, var(--accent), var(--primary-dark));
             color: white;
             border: none;
-            height: 58px;
-            padding: 0 24px;
-            border-radius: 29px;
-            font-size: 16px;
-            font-weight: 800;
+            height: 56px;
+            padding: 0 22px;
+            border-radius: 28px;
+            font-size: 15px;
+            font-weight: 900;
             box-shadow: 0 6px 24px rgba(194,24,91,0.42);
             cursor: pointer;
             z-index: 30;
             display: flex;
             align-items: center;
             gap: 8px;
-            letter-spacing: 0.2px;
-            transition: transform var(--transition), box-shadow var(--transition);
+            transition: transform var(--transition);
         }
 
-        .fab:active {
-            transform: scale(0.96);
-            box-shadow: 0 3px 12px rgba(194,24,91,0.35);
-        }
-
-        .fab-plus {
-            font-size: 22px;
-            font-weight: 300;
-            line-height: 1;
-        }
+        .fab:active { transform: scale(0.96); }
 
         /* ═══════════════════════════════ MODAL ════════════════════════════════ */
         .modal-overlay {
@@ -803,11 +805,11 @@
             background: white;
             width: 100%;
             max-width: 520px;
-            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-            padding: 8px 18px 32px;
-            max-height: 93vh;
+            border-radius: 28px 28px 0 0;
+            padding: 8px 18px 30px;
+            max-height: 92vh;
             overflow-y: auto;
-            animation: slideUp 0.25s cubic-bezier(0.4,0,0.2,1);
+            animation: slideUp 0.22s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         @keyframes slideUp {
@@ -827,12 +829,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
 
         .modal-header h2 {
-            font-size: 20px;
-            font-weight: 800;
+            font-size: 19px;
+            font-weight: 900;
         }
 
         .close-btn {
@@ -847,21 +849,29 @@
             align-items: center;
             justify-content: center;
             color: var(--text-muted);
-            transition: background var(--transition);
         }
 
-        .close-btn:active { background: var(--primary-light); }
-
-        .form-group { margin-bottom: 14px; position: relative; }
+        .form-group {
+            margin-bottom: 13px;
+            position: relative;
+        }
 
         .form-group label {
-            display: block;
+            display: flex;
+            justify-content: space-between;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--text-muted);
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+        }
+
+        .form-group label .hint {
+            font-size: 11px;
+            color: var(--primary);
+            text-transform: none;
+            font-weight: 700;
         }
 
         .form-row {
@@ -878,14 +888,13 @@
         select,
         textarea {
             width: 100%;
-            padding: 12px 14px;
+            padding: 11px 13px;
             border: 1.5px solid #e5e7eb;
             border-radius: var(--radius-sm);
-            font-size: 16px;
+            font-size: 15px;
             background: #fafafa;
             color: var(--text);
             transition: border-color var(--transition), background var(--transition);
-            appearance: auto;
         }
 
         input:focus, select:focus, textarea:focus {
@@ -895,9 +904,8 @@
             box-shadow: 0 0 0 3px rgba(194,24,91,0.08);
         }
 
-        textarea { resize: none; line-height: 1.5; }
+        textarea { resize: none; line-height: 1.4; }
 
-        /* Location selector in form */
         .location-selector {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -905,12 +913,12 @@
         }
 
         .loc-option {
-            padding: 13px;
+            padding: 11px;
             border: 2px solid #e5e7eb;
             border-radius: var(--radius-md);
             text-align: center;
             font-weight: 800;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             background: #f9fafb;
             transition: all var(--transition);
@@ -928,29 +936,74 @@
             color: var(--selo-text);
         }
 
-        .save-btn {
-            width: 100%;
-            background: linear-gradient(135deg, var(--accent), var(--primary-dark));
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: var(--radius-md);
-            font-size: 16px;
-            font-weight: 800;
-            margin-top: 10px;
-            cursor: pointer;
-            box-shadow: 0 4px 16px rgba(194,24,91,0.3);
-            letter-spacing: 0.3px;
-            transition: opacity var(--transition), transform var(--transition);
+        /* ⏱ DURATION SELECTOR (ИЗБИРА СЕ САМОСТОЯТЕЛНО) */
+        .duration-chips-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+            margin-top: 6px;
         }
 
-        .save-btn:active { opacity: 0.85; transform: scale(0.99); }
+        .dur-pill {
+            background: #f3f4f6;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 8px 2px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text);
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--transition);
+        }
 
-        /* ═══════════════════ CLIENT AUTOCOMPLETE ═══════════════════════════════ */
+        .dur-pill.active {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 2px 6px rgba(194,24,91,0.15);
+        }
+
+        /* Time preview banner */
+        .time-calc-banner {
+            background: #fdf2f8;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Conflict warning banner */
+        .conflict-box {
+            background: #fff4e5;
+            border: 1.5px solid #ff9800;
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #d84315;
+            display: none;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.35;
+        }
+
+        .conflict-box.show { display: flex; }
+        .conflict-box .ci { font-size: 18px; flex-shrink: 0; }
+
+        /* Client Autocomplete */
         .client-suggestions {
             position: absolute;
             top: 100%;
-            left: 0; right: 0;
+            left: 0;
+            right: 0;
             background: white;
             border: 1.5px solid var(--primary);
             border-top: none;
@@ -961,96 +1014,109 @@
             box-shadow: var(--shadow-md);
         }
 
-        .client-suggestion-item {
-            padding: 10px 14px;
+        .cs-item {
+            padding: 10px 12px;
             cursor: pointer;
             border-bottom: 1px solid #f3f4f6;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: space-between;
         }
 
-        .client-suggestion-item:last-child { border-bottom: none; }
+        .cs-item:last-child { border-bottom: none; }
+        .cs-item:active, .cs-item:hover { background: var(--primary-light); }
 
-        .client-suggestion-item:active,
-        .client-suggestion-item:hover {
-            background: var(--primary-light);
-        }
-
-        .client-sug-name {
+        .cs-name {
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--text);
-            flex: 1;
         }
 
-        .client-sug-phone {
+        .cs-phone {
             font-size: 12px;
             color: var(--text-muted);
+            margin-left: 6px;
         }
 
-        .client-sug-visits {
+        .cs-visits {
             font-size: 11px;
+            font-weight: 800;
             background: var(--primary-light);
             color: var(--primary);
-            padding: 2px 6px;
+            padding: 2px 7px;
             border-radius: 10px;
-            font-weight: 700;
         }
 
-        /* ═══════════════════════════════ INSTALL BANNER ═══════════════════════ */
-        .install-banner {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            color: white;
-            padding: 12px 16px;
+        .recent-clients-wrap {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 13px;
-            position: relative;
+            gap: 5px;
+            overflow-x: auto;
+            padding: 4px 0 2px;
+            margin-top: 4px;
+            scrollbar-width: none;
         }
 
-        .install-banner .install-emoji { font-size: 22px; }
+        .recent-clients-wrap::-webkit-scrollbar { display: none; }
 
-        .install-banner .install-text { flex: 1; }
+        .recent-client-pill {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text);
+            white-space: nowrap;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all var(--transition);
+        }
 
-        .install-banner .install-text strong { display: block; font-size: 14px; margin-bottom: 1px; }
+        .recent-client-pill:active {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
 
-        .install-btn {
-            background: var(--accent);
+        .save-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--primary-dark));
             color: white;
             border: none;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 700;
+            padding: 15px;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 900;
+            margin-top: 8px;
             cursor: pointer;
-            white-space: nowrap;
-            flex-shrink: 0;
+            box-shadow: 0 4px 16px rgba(194,24,91,0.3);
+            transition: opacity var(--transition), transform var(--transition);
         }
 
-        .close-banner {
-            background: none;
-            border: none;
-            color: rgba(255,255,255,0.6);
-            font-size: 18px;
-            cursor: pointer;
-            padding: 0 4px;
+        .save-btn:active {
+            opacity: 0.85;
+            transform: scale(0.99);
+        }
+
+        .save-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            transform: none;
         }
 
         /* ═══════════════════════════════ TOAST ════════════════════════════════ */
         .toast {
             position: fixed;
-            bottom: 90px;
+            bottom: 86px;
             left: 50%;
             transform: translateX(-50%) translateY(20px);
             background: #1f2937;
             color: white;
             padding: 10px 18px;
             border-radius: 24px;
-            font-size: 14px;
-            font-weight: 600;
-            z-index: 100;
+            font-size: 13px;
+            font-weight: 700;
+            z-index: 200;
             opacity: 0;
             transition: all 0.3s ease;
             pointer-events: none;
@@ -1063,41 +1129,73 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* ═══════════════════════════════ OFFLINE BADGE ════════════════════════ */
+        /* ═══════════════════════════════ OFFLINE BANNER ═══════════════════════ */
         .offline-banner {
             background: #ef6c00;
             color: white;
             text-align: center;
-            font-size: 13px;
-            font-weight: 700;
-            padding: 6px;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 5px;
             display: none;
         }
 
         body.offline .offline-banner { display: block; }
 
+        /* ═══════════════════════════════ INSTALL BANNER ═══════════════════════ */
+        .install-banner {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            position: relative;
+        }
+
+        .install-banner .install-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            white-space: nowrap;
+            margin-left: auto;
+        }
+
+        .close-banner {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 0 4px;
+        }
+
         /* ═══════════════════════════════ EARNINGS TAB ═════════════════════════ */
-        .earnings-panel { display: none; padding: 14px 14px 0; }
+        .earnings-panel { display: none; padding: 12px 14px 20px; }
         .earnings-panel.active { display: block; }
 
         .year-nav {
             display: flex; align-items: center; justify-content: center;
-            gap: 12px; margin-bottom: 14px;
+            gap: 12px; margin-bottom: 12px;
         }
         .year-nav button {
-            background: #f3f4f6; border: none;
+            background: white; border: 1px solid var(--border);
             width: 36px; height: 36px; border-radius: 10px;
             font-size: 18px; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            transition: background var(--transition);
         }
-        .year-nav button:active { background: var(--primary-light); }
         .year-label { font-size: 18px; font-weight: 900; color: var(--text); min-width: 60px; text-align: center; }
 
-        .month-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 16px; }
+        .month-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
         .month-card {
             background: white; border-radius: var(--radius-md);
-            padding: 12px 8px; text-align: center;
+            padding: 10px 6px; text-align: center;
             box-shadow: var(--shadow-sm); border: 2px solid transparent;
             cursor: pointer; transition: all var(--transition); position: relative;
         }
@@ -1106,99 +1204,67 @@
             content: '●'; position: absolute; top: 4px; right: 6px;
             font-size: 8px; color: var(--primary);
         }
-        .month-card-name { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: capitalize; margin-bottom: 4px; }
-        .month-card-amount { font-size: 15px; font-weight: 900; color: var(--text); }
+        .month-card-name { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 3px; text-transform: capitalize; }
+        .month-card-amount { font-size: 14px; font-weight: 900; color: var(--text); }
         .month-card-amount.has-income { color: var(--primary); }
         .month-card-count { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
 
         .range-section { background: white; border-radius: var(--radius-md); padding: 14px; margin-bottom: 14px; box-shadow: var(--shadow-sm); }
-        .range-section h3 { font-size: 14px; font-weight: 800; color: var(--primary); margin-bottom: 12px; }
-        .range-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-        .range-inputs label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
-        .range-inputs input[type="date"] { width: 100%; padding: 9px 10px; border: 1.5px solid #e5e7eb; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; background: #f9fafb; }
+        .range-section h3 { font-size: 13px; font-weight: 900; color: var(--primary); margin-bottom: 10px; }
+        .range-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+        .range-inputs label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 3px; }
+        .range-inputs input[type="date"] { width: 100%; padding: 8px 10px; border: 1.5px solid #e5e7eb; border-radius: var(--radius-sm); font-size: 13px; font-weight: 700; background: #f9fafb; }
 
-        .range-presets { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-        .preset-btn { background: #f3f4f6; border: none; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: all var(--transition); }
+        .range-presets { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px; }
+        .preset-btn { background: #f3f4f6; border: none; padding: 5px 10px; border-radius: 16px; font-size: 11px; font-weight: 700; color: var(--text-muted); cursor: pointer; }
         .preset-btn.active-preset { background: var(--primary-light); color: var(--primary); }
 
         .earnings-summary {
             background: linear-gradient(135deg, var(--accent), var(--primary-dark));
-            border-radius: var(--radius-md); padding: 18px; color: white;
-            margin-bottom: 14px; box-shadow: var(--shadow-lg);
+            border-radius: var(--radius-md); padding: 16px; color: white;
+            margin-bottom: 12px; box-shadow: var(--shadow-lg);
         }
-        .earnings-summary .summary-label { font-size: 12px; font-weight: 700; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-        .earnings-summary .summary-total { font-size: 36px; font-weight: 900; letter-spacing: -1px; margin-bottom: 8px; }
-        .earnings-summary .summary-meta { display: flex; gap: 16px; font-size: 13px; opacity: 0.85; flex-wrap: wrap; }
+        .earnings-summary .summary-label { font-size: 11px; font-weight: 800; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .earnings-summary .summary-total { font-size: 34px; font-weight: 900; letter-spacing: -1px; margin-bottom: 6px; }
+        .earnings-summary .summary-meta { display: flex; gap: 14px; font-size: 12px; opacity: 0.9; }
 
-        .location-split { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-        .split-card { background: white; border-radius: var(--radius-md); padding: 14px; box-shadow: var(--shadow-sm); text-align: center; }
-        .split-card .split-icon { font-size: 22px; margin-bottom: 4px; }
-        .split-card .split-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-        .split-card .split-amount { font-size: 20px; font-weight: 900; }
+        .location-split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        .split-card { background: white; border-radius: var(--radius-md); padding: 12px; box-shadow: var(--shadow-sm); text-align: center; }
+        .split-card .split-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+        .split-card .split-amount { font-size: 18px; font-weight: 900; }
         .split-card.tarnovo .split-amount { color: var(--tarnovo-text); }
         .split-card.selo    .split-amount { color: var(--selo-text); }
-        .split-card .split-count { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .split-card .split-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
         .breakdown-section { background: white; border-radius: var(--radius-md); padding: 14px; margin-bottom: 14px; box-shadow: var(--shadow-sm); }
-        .breakdown-section h3 { font-size: 14px; font-weight: 800; color: var(--primary); margin-bottom: 12px; }
+        .breakdown-section h3 { font-size: 13px; font-weight: 900; color: var(--primary); margin-bottom: 10px; }
         .breakdown-row { padding: 8px 0; border-bottom: 1px solid #f3f4f6; }
         .breakdown-row:last-child { border-bottom: none; }
         .breakdown-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
-        .breakdown-name { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
-        .breakdown-count { font-size: 12px; color: var(--text-muted); margin: 0 8px; }
-        .breakdown-amount { font-size: 14px; font-weight: 800; color: var(--primary); }
+        .breakdown-name { font-size: 13px; font-weight: 700; color: var(--text); flex: 1; }
+        .breakdown-count { font-size: 11px; color: var(--text-muted); margin: 0 8px; }
+        .breakdown-amount { font-size: 13px; font-weight: 900; color: var(--primary); }
         .breakdown-bar-wrap { width: 100%; background: #f3f4f6; border-radius: 4px; height: 4px; }
-        .breakdown-bar { height: 4px; background: linear-gradient(90deg, var(--accent), var(--primary-dark)); border-radius: 4px; transition: width 0.4s ease; }
+        .breakdown-bar { height: 4px; background: linear-gradient(90deg, var(--accent), var(--primary-dark)); border-radius: 4px; }
 
-        .no-earnings { text-align: center; padding: 30px; color: var(--text-muted); font-size: 14px; }
-
-        /* Current hour highlight */
-        .hour-row.is-current-hour {
-            background: linear-gradient(90deg, rgba(233,30,99,0.04), transparent);
-        }
-        .hour-row.is-current-hour .hour-label {
-            color: var(--primary);
-        }
-
-        /* Current time indicator */
-        .current-time-line {
-            position: absolute;
-            left: 46px;
-            right: 0;
-            height: 2px;
-            background: var(--primary);
-            z-index: 5;
-            pointer-events: none;
-        }
-        .current-time-line::before {
-            content: '';
-            position: absolute;
-            left: -4px;
-            top: -3px;
-            width: 8px;
-            height: 8px;
-            background: var(--primary);
-            border-radius: 50%;
-        }
+        .no-earnings { text-align: center; padding: 30px; color: var(--text-muted); font-size: 13px; }
 
         @media (max-width: 360px) {
             .header-title h1 { font-size: 17px; }
-            .appt-btn, .action-btn { font-size: 10px; }
+            .btn-action { font-size: 10px; padding: 6px 2px; }
+            .btn-action .b-icon { font-size: 13px; }
+            .appt-buttons-grid { grid-template-columns: 1.2fr 0.9fr 0.9fr 0.8fr 0.7fr; }
+            .duration-chips-grid { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
 </head>
 <body>
 
-<!-- Offline notification -->
-<div class="offline-banner">📵 Офлайн режим — данните се запазват локално</div>
+<div class="offline-banner">📵 Офлайн режим — данните се запазват на устройството</div>
 
-<!-- Install banner (shows when installable) -->
 <div class="install-banner" id="installBanner" style="display:none">
-    <span class="install-emoji">📲</span>
-    <div class="install-text">
-        <strong>Инсталирай приложението</strong>
-        Добави на началния екран за бърз достъп
-    </div>
+    <span>📲</span>
+    <div><strong>Инсталирай График Нокти</strong> на началния екран</div>
     <button class="install-btn" id="installBtn">Инсталирай</button>
     <button class="close-banner" id="dismissBanner">✕</button>
 </div>
@@ -1207,7 +1273,7 @@
     <div class="header-top">
         <div class="header-title">
             <h1>💅 График Нокти</h1>
-            <span class="pwa-badge" id="pwaBadge" style="display:none">offline</span>
+            <span class="pwa-badge" id="pwaBadge" style="display:none">офлайн</span>
         </div>
         <div class="header-actions">
             <button class="icon-btn" onclick="exportData()" title="Изтегли бекъп">⬇️</button>
@@ -1216,7 +1282,7 @@
         </div>
     </div>
     <div class="location-tabs">
-        <button class="loc-tab active" onclick="setLocationFilter('all')"   id="tab-all">Всички</button>
+        <button class="loc-tab active" onclick="setLocationFilter('all')"     id="tab-all">Всички</button>
         <button class="loc-tab"        onclick="setLocationFilter('tarnovo')" id="tab-tarnovo">📍 Търново</button>
         <button class="loc-tab"        onclick="setLocationFilter('selo')"    id="tab-selo">🏡 На село</button>
     </div>
@@ -1224,7 +1290,8 @@
 
 <div class="controls">
     <div class="view-mode-switch">
-        <button class="mode-btn active" id="mode-date"     onclick="setViewMode('date')">📅 По часове</button>
+        <button class="mode-btn active" id="mode-date"     onclick="setViewMode('date')">📅 График</button>
+        <button class="mode-btn"        id="mode-clients"  onclick="setViewMode('clients')">👥 Клиентки</button>
         <button class="mode-btn"        id="mode-upcoming" onclick="setViewMode('upcoming')">📋 Предстоящи</button>
         <button class="mode-btn"        id="mode-earnings" onclick="setViewMode('earnings')">💰 Приходи</button>
     </div>
@@ -1232,49 +1299,47 @@
     <div class="date-nav" id="dateNavContainer">
         <button class="nav-arrow" onclick="changeDate(-1)">&#8249;</button>
         <div class="date-input-wrap">
-            <input type="date" id="selectedDate" onchange="renderAppointments()">
+            <input type="date" id="selectedDate" onchange="renderCurrentView()">
         </div>
         <button class="nav-arrow" onclick="changeDate(1)">&#8250;</button>
         <button class="today-pill" onclick="goToToday()">Днес</button>
     </div>
 
-    <div class="search-wrap">
+    <div class="search-wrap" id="searchWrap">
         <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" placeholder="Търси по клиентка, телефон..." oninput="renderAppointments()">
+        <input type="text" id="searchInput" placeholder="Търси по клиентка, телефон или бележка..." oninput="renderCurrentView()">
     </div>
 </div>
 
-<div class="stats-bar">
-    <div class="stat-chip">
-        <span class="stat-icon">📋</span>
-        <span id="countStat">0 часа</span>
-    </div>
-    <div class="stat-chip">
-        <span class="stat-icon">💰</span>
-        <span id="priceStat">0 лв</span>
-    </div>
+<div class="stats-bar" id="statsBar">
+    <div class="stat-chip">💅 <span id="countStat">0 часа</span></div>
+    <div class="day-hours-badge">🕒 08:00 – 22:00</div>
+    <div class="stat-chip">💰 <span id="priceStat">0 €</span></div>
 </div>
 
-<!-- Hour grid (date mode) -->
-<div class="hour-grid" id="hourGrid" style="display:none"></div>
+<!-- 1. SCHEDULE VIEW (Дневен график по часове 8:00 - 22:00 с ДУПКИ) -->
+<div class="schedule-container" id="scheduleView"></div>
 
-<!-- List container (upcoming/search mode) -->
-<div class="container" id="appointmentsList"></div>
+<!-- 2. CLIENTS VIEW (Запомнени клиентки) -->
+<div class="clients-panel" id="clientsView">
+    <div class="clients-header">
+        <div class="clients-count" id="clientsCount">0 клиентки в паметта</div>
+        <button class="btn-add-client" onclick="openNewClientModal()">+ Нова клиентка</button>
+    </div>
+    <div class="clients-list" id="clientsList"></div>
+</div>
 
-<!-- Earnings Panel -->
-<div class="earnings-panel" id="earningsPanel">
+<!-- 3. UPCOMING / SEARCH VIEW -->
+<div class="container" id="upcomingView" style="display:none"></div>
 
-    <!-- Year navigation -->
+<!-- 4. EARNINGS VIEW -->
+<div class="earnings-panel" id="earningsView">
     <div class="year-nav">
         <button onclick="changeEarningsYear(-1)">&#8249;</button>
-        <span class="year-label" id="earningsYearLabel">2025</span>
+        <span class="year-label" id="earningsYearLabel">2026</span>
         <button onclick="changeEarningsYear(1)">&#8250;</button>
     </div>
-
-    <!-- Month grid -->
     <div class="month-grid" id="monthGrid"></div>
-
-    <!-- Range picker -->
     <div class="range-section">
         <h3>📆 Произволен период</h3>
         <div class="range-presets">
@@ -1285,29 +1350,21 @@
             <button class="preset-btn" onclick="setPreset('all')">Всичко</button>
         </div>
         <div class="range-inputs">
-            <div>
-                <label>От дата</label>
-                <input type="date" id="rangeFrom" onchange="renderEarnings()">
-            </div>
-            <div>
-                <label>До дата</label>
-                <input type="date" id="rangeTo" onchange="renderEarnings()">
-            </div>
+            <div><label>От дата</label><input type="date" id="rangeFrom" onchange="renderEarnings()"></div>
+            <div><label>До дата</label><input type="date" id="rangeTo"   onchange="renderEarnings()"></div>
         </div>
     </div>
-
-    <!-- Summary + breakdown rendered here -->
     <div id="earningsResult"></div>
 </div>
 
+<!-- Floating Action Button -->
 <button class="fab" onclick="openModal()">
-    <span class="fab-plus">+</span>
-    <span>Нов час</span>
+    <span style="font-size:20px;line-height:1">+</span> Нов час
 </button>
 
-<!-- Add/Edit Modal -->
+<!-- Add / Edit Appointment Modal -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOutsideClick(event)">
-    <div class="modal">
+    <div class="modal" id="theModal">
         <div class="modal-handle"></div>
         <div class="modal-header">
             <h2 id="modalTitle">Запиши нов час</h2>
@@ -1317,6 +1374,7 @@
         <form id="appointmentForm" onsubmit="saveAppointment(event)">
             <input type="hidden" id="editId">
 
+            <!-- Location Selector -->
             <div class="form-group">
                 <label>Локация</label>
                 <div class="location-selector">
@@ -1330,35 +1388,63 @@
                 <input type="hidden" id="formLocation" value="tarnovo">
             </div>
 
+            <!-- Date & Start Time -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Дата</label>
-                    <input type="date" id="formDate" required>
+                    <input type="date" id="formDate" required onchange="checkConflicts()">
                 </div>
                 <div class="form-group">
-                    <label>Час</label>
-                    <input type="time" id="formTime" required>
+                    <label>Начален час</label>
+                    <input type="time" id="formTime" required step="300" onchange="checkConflicts()">
                 </div>
             </div>
 
+            <!-- Duration Selection (Избира се самостоятелно) -->
+            <div class="form-group">
+                <label>Времетраене <span class="hint">избери колко време отнема</span></label>
+                <div class="duration-chips-grid">
+                    <button type="button" class="dur-pill" data-dur="30"  onclick="setDurationManual(30)">30 мин</button>
+                    <button type="button" class="dur-pill" data-dur="45"  onclick="setDurationManual(45)">45 мин</button>
+                    <button type="button" class="dur-pill active" data-dur="60" onclick="setDurationManual(60)">1 час</button>
+                    <button type="button" class="dur-pill" data-dur="75"  onclick="setDurationManual(75)">1ч 15м</button>
+                    <button type="button" class="dur-pill" data-dur="90"  onclick="setDurationManual(90)">1ч 30м</button>
+                    <button type="button" class="dur-pill" data-dur="105" onclick="setDurationManual(105)">1ч 45м</button>
+                    <button type="button" class="dur-pill" data-dur="120" onclick="setDurationManual(120)">2 часа</button>
+                    <button type="button" class="dur-pill" data-dur="150" onclick="setDurationManual(150)">2ч 30м</button>
+                    <button type="button" class="dur-pill" data-dur="180" onclick="setDurationManual(180)">3 часа</button>
+                    <button type="button" class="dur-pill" data-dur="240" onclick="setDurationManual(240)">4 часа</button>
+                </div>
+                <input type="hidden" id="formDuration" value="60">
+
+                <div class="time-calc-banner" id="timePreviewBox">
+                    <span>🕒 Диапазон на часа:</span>
+                    <strong id="timePreviewText">10:00 – 11:00 (1 час)</strong>
+                </div>
+            </div>
+
+            <!-- Conflict warning banner -->
+            <div class="conflict-box" id="conflictBox">
+                <span class="ci">⛔</span>
+                <div>
+                    <div><strong>Заето! Има застъпване с друг час:</strong></div>
+                    <div id="conflictMsg" style="margin-top:2px;font-weight:600"></div>
+                </div>
+            </div>
+
+            <!-- Client Name + Autocomplete -->
             <div class="form-group" id="nameGroup">
-                <label>Клиентка</label>
-                <input type="text" id="formName" placeholder="Напр. Мария" required autocomplete="off"
-                       oninput="showClientSuggestions()" onfocus="showClientSuggestions()" onblur="hideClientSuggestionsDelayed()">
+                <label>Клиентка <span class="hint">запомня се автоматично</span></label>
+                <input type="text" id="formName" placeholder="Въведи име (напр. Десислава)" required
+                       autocomplete="off"
+                       oninput="onNameInput()"
+                       onfocus="showClientSuggestions()"
+                       onblur="hideClientSuggestionsDelayed()">
                 <div class="client-suggestions" id="clientSuggestions" style="display:none"></div>
+                <div class="recent-clients-wrap" id="recentClientsWrap"></div>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Телефон</label>
-                    <input type="tel" id="formPhone" placeholder="0888..." autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label>Цена (лв)</label>
-                    <input type="number" id="formPrice" placeholder="50" step="1" min="0">
-                </div>
-            </div>
-
+            <!-- Procedure (does NOT change your chosen duration) -->
             <div class="form-group">
                 <label>Процедура</label>
                 <select id="formProcedure">
@@ -1373,12 +1459,25 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <label>Бележки</label>
-                <textarea id="formNotes" rows="2" placeholder="Дизайн, цветове, особености..."></textarea>
+            <!-- Phone & Price -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Телефон <span class="hint">за Вайбър</span></label>
+                    <input type="tel" id="formPhone" placeholder="0888123456" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>Цена (€ евро)</label>
+                    <input type="number" id="formPrice" placeholder="25" step="1" min="0">
+                </div>
             </div>
 
-            <button type="submit" class="save-btn">Запази часа</button>
+            <!-- Notes -->
+            <div class="form-group">
+                <label>Бележки</label>
+                <textarea id="formNotes" rows="2" placeholder="Гел блясък, дизайн, френски, сваляне..."></textarea>
+            </div>
+
+            <button type="submit" class="save-btn" id="saveBtn">Запази часа</button>
         </form>
     </div>
 </div>
@@ -1387,947 +1486,1216 @@
 <div class="toast" id="toast"></div>
 
 <script>
-    // ═══════════════════════════════════════════════════════════════
-    // PWA — Register Service Worker
-    // ═══════════════════════════════════════════════════════════════
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js').then(reg => {
-                document.getElementById('pwaBadge').style.display = 'inline';
-                console.log('SW registered');
-            }).catch(err => console.log('SW error:', err));
-        });
-    }
-
-    // ═══════════════════════════════════════════════════════════════
-    // PWA — Install prompt
-    // ═══════════════════════════════════════════════════════════════
-    let deferredPrompt = null;
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        const banner = document.getElementById('installBanner');
-        const dismissed = localStorage.getItem('installBannerDismissed');
-        if (!dismissed) banner.style.display = 'flex';
+// ═══════════════════════════════════════════════════════════════
+// PWA & Service Worker
+// ═══════════════════════════════════════════════════════════════
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then(() => {
+            document.getElementById('pwaBadge').style.display = 'inline';
+        }).catch(() => {});
     });
+}
 
-    document.getElementById('installBtn').addEventListener('click', async () => {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        const result = await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        document.getElementById('installBanner').style.display = 'none';
-        if (result.outcome === 'accepted') showToast('✅ Приложението е инсталирано!');
-    });
-
-    document.getElementById('dismissBanner').addEventListener('click', () => {
-        document.getElementById('installBanner').style.display = 'none';
-        localStorage.setItem('installBannerDismissed', '1');
-    });
-
-    // ═══════════════════════════════════════════════════════════════
-    // Offline detection
-    // ═══════════════════════════════════════════════════════════════
-    function updateOnlineStatus() {
-        document.body.classList.toggle('offline', !navigator.onLine);
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (!localStorage.getItem('installBannerDismissed')) {
+        document.getElementById('installBanner').style.display = 'flex';
     }
-    window.addEventListener('online',  updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
-    updateOnlineStatus();
+});
+document.getElementById('installBtn').addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const r = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    document.getElementById('installBanner').style.display = 'none';
+    if (r.outcome === 'accepted') showToast('✅ Приложението е инсталирано!');
+});
+document.getElementById('dismissBanner').addEventListener('click', () => {
+    document.getElementById('installBanner').style.display = 'none';
+    localStorage.setItem('installBannerDismissed', '1');
+});
 
-    // ═══════════════════════════════════════════════════════════════
-    // Toast
-    // ═══════════════════════════════════════════════════════════════
-    let toastTimer = null;
-    function showToast(msg, duration = 2500) {
-        const el = document.getElementById('toast');
-        el.textContent = msg;
-        el.classList.add('show');
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => el.classList.remove('show'), duration);
+window.addEventListener('online',  () => document.body.classList.remove('offline'));
+window.addEventListener('offline', () => document.body.classList.add('offline'));
+if (!navigator.onLine) document.body.classList.add('offline');
+
+// ═══════════════════════════════════════════════════════════════
+// Toast message
+// ═══════════════════════════════════════════════════════════════
+let toastTimer = null;
+function showToast(msg, duration = 2500) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), duration);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Data & LocalStorage
+// ═══════════════════════════════════════════════════════════════
+const STORAGE_KEY = 'nail_appointments_data_v1';
+const CLIENTS_KEY = 'nail_clients_v1';
+
+const DAY_START_HOUR = 8;   // 08:00
+const DAY_END_HOUR   = 22;  // 22:00
+
+let appointments = loadAppointments();
+let clients = loadClients();
+let currentLocationFilter = 'all';
+let currentViewMode = 'date'; // 'date' | 'clients' | 'upcoming' | 'earnings'
+
+function loadAppointments() {
+    try {
+        const s = localStorage.getItem(STORAGE_KEY);
+        if (!s) return [];
+        const parsed = JSON.parse(s);
+        if (!Array.isArray(parsed)) return [];
+        return parsed.filter(a => a && a.id && a.date && a.time && a.name);
+    } catch { return []; }
+}
+
+function saveAppointments() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appointments));
+    } catch {
+        showToast('❌ Паметта на устройството е пълна!');
     }
+}
 
-    // ═══════════════════════════════════════════════════════════════
-    // Data layer — localStorage with validation
-    // ═══════════════════════════════════════════════════════════════
-    const STORAGE_KEY = 'nail_appointments_data_v1';
-    const CLIENTS_KEY = 'nail_clients_v1';
-    let appointments = loadAppointments();
-    let clients = loadClients(); // { name, phone, visits }
-    let currentLocationFilter = 'all';
-    let currentViewMode = 'date';
+function loadClients() {
+    try {
+        const s = localStorage.getItem(CLIENTS_KEY);
+        if (!s) return {};
+        return JSON.parse(s);
+    } catch { return {}; }
+}
 
-    function isValidAppointment(item) {
-        if (!item || typeof item !== 'object' || Array.isArray(item)) return false;
-        if (typeof item.id !== 'string' || !item.id) return false;
-        if (!['tarnovo', 'selo'].includes(item.location)) return false;
-        if (typeof item.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(item.date)) return false;
-        const parsedDate = new Date(`${item.date}T00:00:00Z`);
-        if (!Number.isFinite(parsedDate.getTime()) || parsedDate.toISOString().slice(0, 10) !== item.date) return false;
-        if (typeof item.time !== 'string' || !/^\d{2}:\d{2}$/.test(item.time)) return false;
-        const [hours, minutes] = item.time.split(':').map(Number);
-        if (hours > 23 || minutes > 59) return false;
-        return typeof item.name === 'string'
-            && typeof item.phone === 'string'
-            && typeof item.price === 'string'
-            && (item.price === '' || Number.isFinite(Number(item.price)))
-            && typeof item.procedure === 'string'
-            && typeof item.notes === 'string'
-            && typeof item.completed === 'boolean';
-    }
-
-    function loadAppointments() {
-        try {
-            const saved = localStorage.getItem(STORAGE_KEY);
-            if (!saved) return [];
-            const parsed = JSON.parse(saved);
-            if (!Array.isArray(parsed) || !parsed.every(isValidAppointment)) {
-                showToast('⚠️ Данните са невалидни. Зареждам празно.');
-                return [];
-            }
-            return parsed;
-        } catch (e) {
-            showToast('⚠️ Грешка при четене на данните.');
-            return [];
-        }
-    }
-
-    function saveToStorage() {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(appointments));
-        } catch (e) {
-            showToast('❌ Паметта е пълна! Изтрий стари записи.');
-        }
-    }
-
-    // ═══════════════════════════════════════════════════════════════
-    // CLIENTS — remember clients by name + phone
-    // ═══════════════════════════════════════════════════════════════
-    function loadClients() {
-        try {
-            const saved = localStorage.getItem(CLIENTS_KEY);
-            return saved ? JSON.parse(saved) : {};
-        } catch { return {}; }
-    }
-
-    function saveClients() {
+function saveClients() {
+    try {
         localStorage.setItem(CLIENTS_KEY, JSON.stringify(clients));
-    }
+    } catch {}
+}
 
-    function upsertClient(name, phone) {
-        const key = name.trim().toLowerCase();
-        if (!key) return;
-        if (!clients[key]) {
-            clients[key] = { name: name.trim(), phone: phone || '', visits: 1 };
-        } else {
-            clients[key].visits = (clients[key].visits || 0) + 1;
-            if (phone) clients[key].phone = phone;
-            if (name.trim()) clients[key].name = name.trim();
-        }
-        saveClients();
-    }
-
-    function getClientSuggestions(query) {
-        if (!query || query.length < 1) return [];
-        const q = query.toLowerCase();
-        return Object.values(clients)
-            .filter(c => c.name.toLowerCase().includes(q))
-            .sort((a, b) => b.visits - a.visits)
-            .slice(0, 6);
-    }
-
-    // ═══════════════════════════════════════════════════════════════
-    // CLIENT AUTOCOMPLETE
-    // ═══════════════════════════════════════════════════════════════
-    function showClientSuggestions() {
-        const input = document.getElementById('formName');
-        const box = document.getElementById('clientSuggestions');
-        const query = input.value.trim();
-
-        // Also show all clients when empty (recent)
-        const list = query.length === 0
-            ? Object.values(clients).sort((a,b) => b.visits - a.visits).slice(0, 6)
-            : getClientSuggestions(query);
-
-        if (list.length === 0) { box.style.display = 'none'; return; }
-
-        box.innerHTML = list.map(c => `
-            <div class="client-suggestion-item" data-name="${escapeHtml(c.name)}" data-phone="${escapeHtml(c.phone || '')}">
-                <span class="client-sug-name">${escapeHtml(c.name)}</span>
-                ${c.phone ? `<span class="client-sug-phone">${escapeHtml(c.phone)}</span>` : ''}
-                <span class="client-sug-visits">${c.visits || 1}×</span>
-            </div>`).join('');
-
-        box.style.display = 'block';
-
-        box.querySelectorAll('.client-suggestion-item').forEach(item => {
-            item.addEventListener('mousedown', () => {
-                document.getElementById('formName').value  = item.dataset.name;
-                document.getElementById('formPhone').value = item.dataset.phone;
-                box.style.display = 'none';
-            });
-        });
-    }
-
-    function hideClientSuggestionsDelayed() {
-        setTimeout(() => {
-            document.getElementById('clientSuggestions').style.display = 'none';
-        }, 200);
-    }
-
-    // ═══════════════════════════════════════════════════════════════
-    // Date helpers
-    // ═══════════════════════════════════════════════════════════════
-    function getTodayString() {
-        const d = new Date();
-        const yyyy = d.getFullYear();
-        const mm = String(d.getMonth() + 1).padStart(2, '0');
-        const dd = String(d.getDate()).padStart(2, '0');
-        return `${yyyy}-${mm}-${dd}`;
-    }
-
-    function formatBgDate(dateStr) {
-        const date = new Date(dateStr + 'T00:00:00');
-        return date.toLocaleDateString('bg-BG', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long'
-        });
-    }
-
-    function formatBgDayName(dateStr) {
-        const date = new Date(dateStr + 'T00:00:00');
-        return date.toLocaleDateString('bg-BG', { weekday: 'long' });
-    }
-
-    function formatBgShortDate(dateStr) {
-        const date = new Date(dateStr + 'T00:00:00');
-        return date.toLocaleDateString('bg-BG', { day: 'numeric', month: 'long', year: 'numeric' });
-    }
-
-    document.getElementById('selectedDate').value = getTodayString();
-
-    // ═══════════════════════════════════════════════════════════════
-    // View / filter controls
-    // ═══════════════════════════════════════════════════════════════
-    function setLocationFilter(loc) {
-        currentLocationFilter = loc;
-        document.querySelectorAll('.loc-tab').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(`tab-${loc}`).classList.add('active');
-        renderAppointments();
-    }
-
-    function setViewMode(mode) {
-        currentViewMode = mode;
-        document.getElementById('mode-date').classList.toggle('active', mode === 'date');
-        document.getElementById('mode-upcoming').classList.toggle('active', mode === 'upcoming');
-        document.getElementById('mode-earnings').classList.toggle('active', mode === 'earnings');
-
-        const isEarnings = mode === 'earnings';
-        const isDate = mode === 'date';
-
-        document.getElementById('dateNavContainer').style.display = (mode === 'date') ? 'flex' : 'none';
-        document.getElementById('hourGrid').style.display = isDate ? '' : 'none';
-        document.getElementById('appointmentsList').style.display = (!isDate && !isEarnings) ? '' : 'none';
-        document.getElementById('earningsPanel').classList.toggle('active', isEarnings);
-        document.querySelector('.stats-bar').style.display = isEarnings ? 'none' : '';
-
-        if (isEarnings) {
-            renderMonthGrid();
-            renderEarnings();
-        } else {
-            renderAppointments();
-        }
-    }
-
-    function changeDate(days) {
-        const input = document.getElementById('selectedDate');
-        const current = new Date((input.value || getTodayString()) + 'T00:00:00');
-        current.setDate(current.getDate() + days);
-        const yyyy = current.getFullYear();
-        const mm = String(current.getMonth() + 1).padStart(2, '0');
-        const dd = String(current.getDate()).padStart(2, '0');
-        input.value = `${yyyy}-${mm}-${dd}`;
-        renderAppointments();
-    }
-
-    function goToToday() {
-        document.getElementById('selectedDate').value = getTodayString();
-        setViewMode('date');
-        renderAppointments();
-    }
-
-    // ═══════════════════════════════════════════════════════════════
-    // VIBER — send appointment info
-    // ═══════════════════════════════════════════════════════════════
-    function sendViber(app) {
-        const BG_DAYS = ['Неделя','Понеделник','Вторник','Сряда','Четвъртък','Петък','Събота'];
-        const d = new Date(app.date + 'T00:00:00');
-        const dayName = BG_DAYS[d.getDay()];
-        const loc = app.location === 'tarnovo' ? '📍 Търново' : '🏡 На село';
-
-        let msg = `💅 Напомняне за час!\n`;
-        msg += `👤 ${app.name}\n`;
-        msg += `📅 ${dayName}, ${formatBgShortDate(app.date)}\n`;
-        msg += `🕒 ${app.time}\n`;
-        msg += `✨ ${app.procedure}\n`;
-        msg += `${loc}\n`;
-        if (app.price) msg += `💰 ${app.price} лв\n`;
-        if (app.notes) msg += `📝 ${app.notes}\n`;
-
-        const encoded = encodeURIComponent(msg);
-        // If phone is available open direct Viber chat
-        if (app.phone) {
-            const phone = app.phone.replace(/\D/g, '');
-            window.open(`viber://chat?number=%2B359${phone.replace(/^0/,'')}&text=${encoded}`, '_blank');
-        } else {
-            // Copy to clipboard and open Viber
-            navigator.clipboard && navigator.clipboard.writeText(msg).then(() => {
-                showToast('📋 Съобщението е копирано!');
-            });
-            window.open(`viber://forward?text=${encoded}`, '_blank');
-        }
-    }
-
-    // ═══════════════════════════════════════════════════════════════
-    // RENDER — HOUR GRID (date mode)
-    // ═══════════════════════════════════════════════════════════════
-    const DAY_START = 8;  // 08:00
-    const DAY_END   = 22; // 22:00
-
-    function renderHourGrid() {
-        const gridEl = document.getElementById('hourGrid');
-        const selectedDate = document.getElementById('selectedDate').value;
-        const todayStr = getTodayString();
-        const isToday = selectedDate === todayStr;
-        const now = new Date();
-        const currentHour = now.getHours();
-        const currentMinute = now.getMinutes();
-        const searchQuery = document.getElementById('searchInput').value.trim().toLowerCase();
-
-        // Filter appointments for this date
-        let dayAppts = appointments.filter(app => {
-            if (currentLocationFilter !== 'all' && app.location !== currentLocationFilter) return false;
-            if (searchQuery) {
-                return app.date === selectedDate && (
-                    app.name.toLowerCase().includes(searchQuery) ||
-                    (app.phone || '').toLowerCase().includes(searchQuery) ||
-                    (app.notes || '').toLowerCase().includes(searchQuery)
-                );
-            }
-            return app.date === selectedDate;
-        }).sort((a, b) => a.time.localeCompare(b.time));
-
-        // Stats
-        const totalPrice = dayAppts.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
-        document.getElementById('countStat').textContent = `${dayAppts.length} часа`;
-        document.getElementById('priceStat').textContent = `${totalPrice} лв`;
-
-        // Day header
-        const dayNameStr = formatBgDayName(selectedDate);
-        const dateStr = formatBgShortDate(selectedDate);
-
-        let html = `
-            <div class="day-header-info">
-                <span class="day-name">${isToday ? '📌 Днес — ' : ''}${dayNameStr}</span>
-                <span class="day-date">${dateStr}</span>
-            </div>`;
-
-        // Build hour rows
-        for (let h = DAY_START; h <= DAY_END; h++) {
-            const hourStr = String(h).padStart(2, '0') + ':00';
-            const hourStr30 = String(h).padStart(2, '0') + ':30';
-
-            // Appointments in this hour (h:00 - h:59)
-            const appsInHour = dayAppts.filter(app => {
-                const appHour = parseInt(app.time.split(':')[0]);
-                return appHour === h;
-            });
-
-            const isCurrentHour = isToday && currentHour === h;
-            // Position of current time line within the hour (0-100%)
-            const timePercent = isCurrentHour ? Math.round((currentMinute / 60) * 100) : -1;
-
-            html += `<div class="hour-row ${isCurrentHour ? 'is-current-hour' : ''}" id="hour-${h}">`;
-            html += `<div class="hour-label ${isCurrentHour ? 'current-hour' : ''}">${hourStr}</div>`;
-            html += `<div class="hour-slots">`;
-
-            if (isCurrentHour && timePercent >= 0) {
-                html += `<div class="current-time-line" style="top:${timePercent}%"></div>`;
-            }
-
-            if (appsInHour.length === 0) {
-                // Empty slot — tap to add
-                html += `
-                    <div class="hour-empty">
-                        <button class="hour-add-btn" onclick="openModalAtTime('${selectedDate}', '${hourStr}')">
-                            <span>+</span> <span>Запиши час</span>
-                        </button>
-                    </div>`;
+// Seed clients from appointments if empty
+if (Object.keys(clients).length === 0 && appointments.length > 0) {
+    appointments.forEach(a => {
+        if (a.name) {
+            const k = a.name.trim().toLowerCase();
+            if (!clients[k]) {
+                clients[k] = { name: a.name.trim(), phone: a.phone || '', visits: 1, lastDate: a.date };
             } else {
-                appsInHour.forEach(app => {
-                    html += renderApptSlot(app);
-                });
+                clients[k].visits = (clients[k].visits || 1) + 1;
+                if (a.phone && !clients[k].phone) clients[k].phone = a.phone;
+                if (a.date > (clients[k].lastDate || '')) clients[k].lastDate = a.date;
             }
-
-            html += `</div></div>`;
         }
+    });
+    saveClients();
+}
 
-        gridEl.innerHTML = html;
-
-        // Scroll to current hour or first appointment
-        if (isToday && currentHour >= DAY_START && currentHour <= DAY_END) {
-            setTimeout(() => {
-                const el = document.getElementById(`hour-${currentHour}`);
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 100);
-        } else if (dayAppts.length > 0) {
-            const firstHour = parseInt(dayAppts[0].time.split(':')[0]);
-            const el = document.getElementById(`hour-${Math.max(firstHour, DAY_START)}`);
-            if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+function upsertClient(name, phone, date) {
+    if (!name || !name.trim()) return;
+    const cleanName = name.trim();
+    const key = cleanName.toLowerCase();
+    if (!clients[key]) {
+        clients[key] = {
+            name: cleanName,
+            phone: phone ? phone.trim() : '',
+            visits: 1,
+            lastDate: date || getTodayString()
+        };
+    } else {
+        clients[key].name = cleanName;
+        if (phone && phone.trim()) clients[key].phone = phone.trim();
+        clients[key].visits = (clients[key].visits || 0) + 1;
+        if (date && date > (clients[key].lastDate || '')) {
+            clients[key].lastDate = date;
         }
     }
+    saveClients();
+}
 
-    function renderApptSlot(app) {
+function deleteClient(nameKey) {
+    if (confirm(`Сигурна ли си, че искаш да изтриеш ${clients[nameKey]?.name || 'клиентката'} от списъка?`)) {
+        delete clients[nameKey];
+        saveClients();
+        renderClientsView();
+        showToast('🗑️ Клиентката е изтрита от паметта');
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Time & Conflicts & Gaps (Дупки) Logic
+// ═══════════════════════════════════════════════════════════════
+function timeToMinutes(t) {
+    if (!t) return 0;
+    const [h, m] = t.split(':').map(Number);
+    return (h || 0) * 60 + (m || 0);
+}
+
+function minutesToTime(m) {
+    const hours = Math.floor(m / 60) % 24;
+    const mins = m % 60;
+    return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+}
+
+function durationLabel(min) {
+    min = parseInt(min) || 60;
+    if (min < 60) return `${min} мин`;
+    const h = Math.floor(min / 60);
+    const m = min % 60;
+    return m ? `${h}ч ${m}мин` : `${h}ч`;
+}
+
+// Check if two intervals overlap
+function getConflicts(date, startTime, durationMin, excludeId) {
+    if (!date || !startTime) return [];
+    const start = timeToMinutes(startTime);
+    const end = start + parseInt(durationMin || 60);
+
+    return appointments.filter(a => {
+        if (a.id === excludeId) return false;
+        if (a.date !== date) return false;
+        const aStart = timeToMinutes(a.time);
+        const aEnd = aStart + parseInt(a.duration || 60);
+        return start < aEnd && end > aStart;
+    });
+}
+
+function checkConflicts() {
+    const date   = document.getElementById('formDate').value;
+    const time   = document.getElementById('formTime').value;
+    const dur    = document.getElementById('formDuration').value;
+    const editId = document.getElementById('editId').value;
+    const box    = document.getElementById('conflictBox');
+    const msgEl  = document.getElementById('conflictMsg');
+    const btn    = document.getElementById('saveBtn');
+
+    // Update Time Preview
+    if (time && dur) {
+        const startMin = timeToMinutes(time);
+        const endMin = startMin + parseInt(dur);
+        document.getElementById('timePreviewText').textContent =
+            `${time} – ${minutesToTime(endMin)} (${durationLabel(dur)})`;
+    }
+
+    if (!date || !time || !dur) {
+        box.classList.remove('show');
+        btn.disabled = false;
+        return;
+    }
+
+    const conflicts = getConflicts(date, time, dur, editId);
+    if (conflicts.length > 0) {
+        const conflictDetails = conflicts.map(c => {
+            const cStart = timeToMinutes(c.time);
+            const cEnd = cStart + parseInt(c.duration || 60);
+            return `${c.name} (${c.time} – ${minutesToTime(cEnd)})`;
+        }).join(', ');
+
+        msgEl.textContent = conflictDetails;
+        box.classList.add('show');
+        btn.disabled = true;
+    } else {
+        box.classList.remove('show');
+        btn.disabled = false;
+    }
+}
+
+// 🟢 CALCULATE FULL DAY TIMELINE FROM 08:00 TO 22:00 WITH ALL GAPS (ДУПКИ)
+function calculateDayTimeline(dayAppts, startHour = DAY_START_HOUR, endHour = DAY_END_HOUR) {
+    const dayStart = startHour * 60;
+    const dayEnd = endHour * 60;
+    const sorted = [...dayAppts].sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
+
+    const timeline = [];
+    let pointer = dayStart;
+
+    sorted.forEach(app => {
+        const aStart = timeToMinutes(app.time);
+        const aDur = parseInt(app.duration || 60);
+        const aEnd = aStart + aDur;
+
+        // Gap before this appointment
+        if (aStart > pointer) {
+            timeline.push({
+                type: 'gap',
+                start: minutesToTime(pointer),
+                end: minutesToTime(aStart),
+                durationMin: aStart - pointer
+            });
+        }
+
+        // The appointment itself
+        timeline.push({
+            type: 'appt',
+            data: app,
+            start: app.time,
+            end: minutesToTime(aEnd),
+            durationMin: aDur
+        });
+
+        pointer = Math.max(pointer, aEnd);
+    });
+
+    // Gap after last appointment until 22:00
+    if (pointer < dayEnd) {
+        timeline.push({
+            type: 'gap',
+            start: minutesToTime(pointer),
+            end: minutesToTime(dayEnd),
+            durationMin: dayEnd - pointer
+        });
+    }
+
+    return timeline;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Date Helpers
+// ═══════════════════════════════════════════════════════════════
+function getTodayString() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function formatBgFullDate(dateStr) {
+    const date = new Date(dateStr + 'T00:00:00');
+    return date.toLocaleDateString('bg-BG', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long'
+    });
+}
+
+function formatBgDateShort(dateStr) {
+    const date = new Date(dateStr + 'T00:00:00');
+    return date.toLocaleDateString('bg-BG', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+}
+
+document.getElementById('selectedDate').value = getTodayString();
+
+// ═══════════════════════════════════════════════════════════════
+// Navigation & Views
+// ═══════════════════════════════════════════════════════════════
+function setLocationFilter(loc) {
+    currentLocationFilter = loc;
+    document.querySelectorAll('.loc-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById(`tab-${loc}`).classList.add('active');
+    renderCurrentView();
+}
+
+function setViewMode(mode) {
+    currentViewMode = mode;
+    ['date', 'clients', 'upcoming', 'earnings'].forEach(m => {
+        const btn = document.getElementById(`mode-${m}`);
+        if (btn) btn.classList.toggle('active', m === mode);
+    });
+
+    const isDate     = (mode === 'date');
+    const isClients  = (mode === 'clients');
+    const isUpcoming = (mode === 'upcoming');
+    const isEarnings = (mode === 'earnings');
+
+    document.getElementById('dateNavContainer').style.display = isDate ? 'flex' : 'none';
+    document.getElementById('searchWrap').style.display = (isDate || isUpcoming || isClients) ? 'block' : 'none';
+    document.getElementById('statsBar').style.display = (isDate || isUpcoming) ? 'flex' : 'none';
+
+    document.getElementById('scheduleView').style.display  = isDate ? 'block' : 'none';
+    document.getElementById('clientsView').classList.toggle('active', isClients);
+    document.getElementById('upcomingView').style.display  = isUpcoming ? 'block' : 'none';
+    document.getElementById('earningsView').classList.toggle('active', isEarnings);
+
+    if (isClients) {
+        document.getElementById('searchInput').placeholder = 'Търси клиентка по име или телефон...';
+    } else {
+        document.getElementById('searchInput').placeholder = 'Търси по клиентка, телефон или бележка...';
+    }
+
+    renderCurrentView();
+}
+
+function changeDate(days) {
+    const input = document.getElementById('selectedDate');
+    const cur = new Date((input.value || getTodayString()) + 'T00:00:00');
+    cur.setDate(cur.getDate() + days);
+    input.value = `${cur.getFullYear()}-${String(cur.getMonth()+1).padStart(2,'0')}-${String(cur.getDate()).padStart(2,'0')}`;
+    renderCurrentView();
+}
+
+function goToToday() {
+    document.getElementById('selectedDate').value = getTodayString();
+    setViewMode('date');
+}
+
+function renderCurrentView() {
+    if (currentViewMode === 'date')     renderScheduleView();
+    else if (currentViewMode === 'clients')  renderClientsView();
+    else if (currentViewMode === 'upcoming') renderUpcomingView();
+    else if (currentViewMode === 'earnings') { renderMonthGrid(); renderEarnings(); }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 1. SCHEDULE VIEW (8:00 - 22:00 с показване на ВСИЧКИ ДУПКИ)
+// ═══════════════════════════════════════════════════════════════
+function renderScheduleView() {
+    const container = document.getElementById('scheduleView');
+    const selectedDate = document.getElementById('selectedDate').value;
+    const todayStr = getTodayString();
+    const isToday = (selectedDate === todayStr);
+    const sq = document.getElementById('searchInput').value.trim().toLowerCase();
+
+    // Filter day's appointments
+    let dayAppts = appointments.filter(a => {
+        if (a.date !== selectedDate) return false;
+        if (currentLocationFilter !== 'all' && a.location !== currentLocationFilter) return false;
+        if (sq) {
+            return a.name.toLowerCase().includes(sq) ||
+                   (a.phone || '').toLowerCase().includes(sq) ||
+                   (a.notes || '').toLowerCase().includes(sq);
+        }
+        return true;
+    }).sort((a, b) => a.time.localeCompare(b.time));
+
+    // Stats bar
+    const totalPrice = dayAppts.reduce((s, a) => s + (Number(a.price) || 0), 0);
+    document.getElementById('countStat').textContent = `${dayAppts.length} часа`;
+    document.getElementById('priceStat').textContent = `${totalPrice} €`;
+
+    // Calculate full timeline with gaps from 08:00 to 22:00
+    const timeline = calculateDayTimeline(dayAppts, DAY_START_HOUR, DAY_END_HOUR);
+    const gaps = timeline.filter(item => item.type === 'gap');
+
+    // 1. Day Title Card
+    let html = `
+        <div class="day-title-card">
+            <div>
+                <div class="day-main">${isToday ? '📌 Днес — ' : '📅 '}${formatBgFullDate(selectedDate)}</div>
+                <div class="day-sub">${formatBgDateShort(selectedDate)}</div>
+            </div>
+            <div style="text-align:right">
+                <div style="font-size:14px;font-weight:900;color:var(--primary)">${dayAppts.length} ${dayAppts.length === 1 ? 'час' : 'часа'}</div>
+                <div style="font-size:11px;color:var(--text-muted);font-weight:700">08:00 – 22:00</div>
+            </div>
+        </div>`;
+
+    // 2. 🟢 Gaps Summary Box (Бързи дупки за деня)
+    if (gaps.length > 0) {
+        html += `
+            <div class="gaps-summary-box">
+                <div class="gaps-summary-header">
+                    <span>🟢 Свободни прозорци (дупки) днес: ${gaps.length}</span>
+                    <span style="font-weight:900">натисни за записване ➔</span>
+                </div>
+                <div class="gaps-pills-row">
+                    ${gaps.map(g => `
+                        <button type="button" class="gap-pill" onclick="openModalAtTime('${selectedDate}', '${g.start}', ${g.durationMin})">
+                            🟢 <strong>${g.start}–${g.end}</strong> (${durationLabel(g.durationMin)})
+                        </button>
+                    `).join('')}
+                </div>
+            </div>`;
+    }
+
+    // 3. Timeline Stream from 08:00 to 22:00
+    html += `<div class="timeline-stream">`;
+
+    timeline.forEach(item => {
+        if (item.type === 'gap') {
+            // Render Gap Card
+            html += `
+                <div class="gap-card" onclick="openModalAtTime('${selectedDate}', '${item.start}', ${item.durationMin})">
+                    <div class="gap-card-left">
+                        <div class="gap-card-title">
+                            <span>🟢 Свободна дупка:</span>
+                            <strong>${durationLabel(item.durationMin)}</strong>
+                        </div>
+                        <div class="gap-card-time">🕒 ${item.start} – ${item.end}</div>
+                    </div>
+                    <button type="button" class="gap-card-btn">
+                        <span>+</span> Запиши час
+                    </button>
+                </div>`;
+        } else if (item.type === 'appt') {
+            // Render Appointment Card
+            const app = item.data;
+            const dur = item.durationMin;
+            const endTime = item.end;
+            const locClass = app.location === 'tarnovo' ? 'tarnovo' : 'selo';
+            const locLabel = app.location === 'tarnovo' ? '📍 Търново' : '🏡 На село';
+
+            const doneBtn = app.completed
+                ? `<button type="button" class="btn-action undone" onclick="toggleCompleted('${escHtml(app.id)}')"><span class="b-icon">↩</span>Върни</button>`
+                : `<button type="button" class="btn-action done"   onclick="toggleCompleted('${escHtml(app.id)}')"><span class="b-icon">✔</span>Готово</button>`;
+
+            const callBtn = app.phone
+                ? `<a href="tel:${escHtml(app.phone)}" class="btn-action call"><span class="b-icon">📞</span>Обади</a>`
+                : `<span class="btn-action call disabled"><span class="b-icon">📞</span>—</span>`;
+
+            html += `
+                <div class="appt-card loc-${locClass} ${app.completed ? 'completed' : ''}">
+                    <div class="appt-card-header">
+                        <div class="appt-client-info">
+                            <div class="appt-client-name">
+                                <span>${escHtml(app.name)}</span>
+                                ${app.phone ? `<span style="font-size:12px;color:var(--text-muted);font-weight:600">(${escHtml(app.phone)})</span>` : ''}
+                            </div>
+                            <div class="appt-time-span">🕒 ${escHtml(app.time)} – ${endTime} (${durationLabel(dur)})</div>
+                        </div>
+                        <div class="appt-badges">
+                            <span class="appt-badge ${locClass}">${locLabel}</span>
+                        </div>
+                    </div>
+
+                    <div class="appt-meta-row">
+                        <span class="chip proc">💅 ${escHtml(app.procedure)}</span>
+                        <span class="chip dur">⏱ ${durationLabel(dur)}</span>
+                        ${app.price ? `<span class="chip price">💰 ${escHtml(app.price)} €</span>` : ''}
+                    </div>
+
+                    ${app.notes ? `<div class="appt-notes-box">📝 ${escHtml(app.notes)}</div>` : ''}
+
+                    <div class="appt-buttons-grid">
+                        <button type="button" class="btn-action viber" onclick="sendViber(appointments.find(x=>x.id==='${escHtml(app.id)}'))">
+                            <span class="b-icon">💬</span>Вайбър
+                        </button>
+                        ${callBtn}
+                        ${doneBtn}
+                        <button type="button" class="btn-action edit" onclick="editAppointment('${escHtml(app.id)}')">
+                            <span class="b-icon">✏️</span>Редакция
+                        </button>
+                        <button type="button" class="btn-action delete" onclick="deleteAppointment('${escHtml(app.id)}')">
+                            <span class="b-icon">🗑️</span>Изтрий
+                        </button>
+                    </div>
+                </div>`;
+        }
+    });
+
+    html += `</div>`;
+    container.innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 2. CLIENTS VIEW (База с клиентки)
+// ═══════════════════════════════════════════════════════════════
+function renderClientsView() {
+    const listEl = document.getElementById('clientsList');
+    const sq = document.getElementById('searchInput').value.trim().toLowerCase();
+    const countEl = document.getElementById('clientsCount');
+
+    let allClients = Object.entries(clients).map(([k, c]) => ({
+        key: k,
+        name: c.name || k,
+        phone: c.phone || '',
+        visits: c.visits || 1,
+        lastDate: c.lastDate || ''
+    }));
+
+    if (sq) {
+        allClients = allClients.filter(c =>
+            c.name.toLowerCase().includes(sq) || c.phone.includes(sq)
+        );
+    }
+
+    allClients.sort((a, b) => b.visits - a.visits || a.name.localeCompare(b.name));
+    countEl.textContent = `${allClients.length} ${allClients.length === 1 ? 'клиентка' : 'клиентки'}`;
+
+    if (allClients.length === 0) {
+        listEl.innerHTML = `
+            <div class="empty-state">
+                <span class="empty-emoji">👥</span>
+                <p>Няма намерени клиентки.</p>
+                <p style="font-size:13px;margin-top:4px">Всяка клиентка, която запишеш в графика, автоматично се запазва тук!</p>
+            </div>`;
+        return;
+    }
+
+    let html = '';
+    allClients.forEach(c => {
+        const lastVisitStr = c.lastDate ? `Последно: ${formatBgDateShort(c.lastDate)}` : '';
+        const phoneFormatted = c.phone || 'Няма телефон';
+
+        html += `
+            <div class="client-card">
+                <div class="client-card-top">
+                    <span class="client-card-name">👤 ${escHtml(c.name)}</span>
+                    <span class="client-card-visits">⭐ ${c.visits} ${c.visits === 1 ? 'посещение' : 'посещения'}</span>
+                </div>
+                <div class="client-card-meta">
+                    <span>📞 ${escHtml(phoneFormatted)}</span>
+                    ${lastVisitStr ? `<span>· ${lastVisitStr}</span>` : ''}
+                </div>
+                <div class="client-card-actions">
+                    <button type="button" class="cca-btn book" onclick="bookForClient('${escHtml(c.name)}', '${escHtml(c.phone)}')">
+                        📅 Запиши час
+                    </button>
+                    <button type="button" class="cca-btn viber" onclick="sendViberToClient('${escHtml(c.name)}', '${escHtml(c.phone)}')">
+                        💬 Вайбър
+                    </button>
+                    ${c.phone ? `<a href="tel:${escHtml(c.phone)}" class="cca-btn call">📞 Обади</a>` : `<span class="cca-btn call" style="opacity:.35">—</span>`}
+                    <button type="button" class="cca-btn del" onclick="deleteClient('${escHtml(c.key)}')" title="Изтрий от списъка">
+                        🗑️
+                    </button>
+                </div>
+            </div>`;
+    });
+
+    listEl.innerHTML = html;
+}
+
+function bookForClient(name, phone) {
+    openModal();
+    document.getElementById('formName').value = name;
+    document.getElementById('formPhone').value = phone || '';
+    checkConflicts();
+}
+
+function openNewClientModal() {
+    const name = prompt('Въведи име на новата клиентка:');
+    if (!name || !name.trim()) return;
+    const phone = prompt(`Телефон на ${name.trim()} (по желание):`) || '';
+    upsertClient(name.trim(), phone.trim(), getTodayString());
+    renderClientsView();
+    showToast(`✅ Клиентката ${name.trim()} е добавена!`);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 3. UPCOMING / SEARCH VIEW
+// ═══════════════════════════════════════════════════════════════
+function renderUpcomingView() {
+    const container = document.getElementById('upcomingView');
+    const todayStr = getTodayString();
+    const sq = document.getElementById('searchInput').value.trim().toLowerCase();
+
+    let filtered = appointments.filter(a => {
+        if (currentLocationFilter !== 'all' && a.location !== currentLocationFilter) return false;
+        if (sq) {
+            return a.name.toLowerCase().includes(sq) ||
+                   (a.phone || '').toLowerCase().includes(sq) ||
+                   (a.notes || '').toLowerCase().includes(sq);
+        }
+        return a.date >= todayStr;
+    }).sort((a, b) => a.date !== b.date ? a.date.localeCompare(b.date) : a.time.localeCompare(b.time));
+
+    const totalPrice = filtered.reduce((s, a) => s + (Number(a.price) || 0), 0);
+    document.getElementById('countStat').textContent = `${filtered.length} часа`;
+    document.getElementById('priceStat').textContent = `${totalPrice} €`;
+
+    if (filtered.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <span class="empty-emoji">💅</span>
+                <p>Няма предстоящи часове.</p>
+                <p style="margin-top:4px;font-size:13px">Натисни <strong>+ Нов час</strong> за да добавиш.</p>
+            </div>`;
+        return;
+    }
+
+    let html = '';
+    let lastDate = '';
+
+    filtered.forEach(app => {
+        if (app.date !== lastDate) {
+            const isToday = (app.date === todayStr);
+            html += `<div class="date-section-header">${isToday ? '📌 Днес — ' : '📅 '}${formatBgFullDate(app.date)}</div>`;
+            lastDate = app.date;
+        }
+
+        const dur = parseInt(app.duration || 60);
+        const endT = minutesToTime(timeToMinutes(app.time) + dur);
         const locClass = app.location === 'tarnovo' ? 'tarnovo' : 'selo';
         const locLabel = app.location === 'tarnovo' ? '📍 Търново' : '🏡 На село';
-        const priceTag = app.price ? `<span class="appt-tag price">💰 ${escapeHtml(app.price)} лв</span>` : '';
-        const notesHtml = app.notes ? `<div class="appt-notes">📝 ${escapeHtml(app.notes)}</div>` : '';
 
         const doneBtn = app.completed
-            ? `<button class="appt-btn undone" data-action="toggle" data-id="${escapeHtml(app.id)}"><span class="btn-icon">↩</span>Върни</button>`
-            : `<button class="appt-btn done" data-action="toggle" data-id="${escapeHtml(app.id)}"><span class="btn-icon">✔</span>Готово</button>`;
+            ? `<button type="button" class="btn-action undone" onclick="toggleCompleted('${escHtml(app.id)}')"><span class="b-icon">↩</span>Върни</button>`
+            : `<button type="button" class="btn-action done"   onclick="toggleCompleted('${escHtml(app.id)}')"><span class="b-icon">✔</span>Готово</button>`;
 
         const callBtn = app.phone
-            ? `<a href="tel:${escapeHtml(app.phone)}" class="appt-btn call"><span class="btn-icon">📞</span>Обади</a>`
-            : `<button class="appt-btn call" style="opacity:0.35" disabled><span class="btn-icon">📞</span>Обади</button>`;
+            ? `<a href="tel:${escHtml(app.phone)}" class="btn-action call"><span class="b-icon">📞</span>Обади</a>`
+            : `<span class="btn-action call disabled"><span class="b-icon">📞</span>—</span>`;
 
-        return `
-            <div class="appt-slot loc-${locClass} ${app.completed ? 'completed' : ''}">
-                <div class="appt-top">
-                    <span class="appt-time">🕒 ${escapeHtml(app.time)}</span>
-                    <span class="appt-name">${escapeHtml(app.name)}</span>
-                    <span class="appt-loc-badge ${locClass}">${locLabel}</span>
+        html += `
+            <div class="appt-card loc-${locClass} ${app.completed ? 'completed' : ''}" style="margin-bottom:10px">
+                <div class="appt-card-header">
+                    <div class="appt-client-info">
+                        <div class="appt-client-name">
+                            <span>${escHtml(app.name)}</span>
+                            ${app.phone ? `<span style="font-size:12px;color:var(--text-muted);font-weight:600">(${escHtml(app.phone)})</span>` : ''}
+                        </div>
+                        <div class="appt-time-span">🕒 ${escHtml(app.time)} – ${endT} (${durationLabel(dur)})</div>
+                    </div>
+                    <div class="appt-badges">
+                        <span class="appt-badge ${locClass}">${locLabel}</span>
+                    </div>
                 </div>
-                <div class="appt-details">
-                    <span class="appt-tag proc">💅 ${escapeHtml(app.procedure)}</span>
-                    ${priceTag}
+
+                <div class="appt-meta-row">
+                    <span class="chip proc">💅 ${escHtml(app.procedure)}</span>
+                    <span class="chip dur">⏱ ${durationLabel(dur)}</span>
+                    ${app.price ? `<span class="chip price">💰 ${escHtml(app.price)} €</span>` : ''}
                 </div>
-                ${notesHtml}
-                <div class="appt-actions">
-                    <button class="appt-btn viber" data-action="viber" data-id="${escapeHtml(app.id)}">
-                        <span class="btn-icon">💬</span>Вайбър
+
+                ${app.notes ? `<div class="appt-notes-box">📝 ${escHtml(app.notes)}</div>` : ''}
+
+                <div class="appt-buttons-grid">
+                    <button type="button" class="btn-action viber" onclick="sendViber(appointments.find(x=>x.id==='${escHtml(app.id)}'))">
+                        <span class="b-icon">💬</span>Вайбър
                     </button>
                     ${callBtn}
                     ${doneBtn}
-                    <button class="appt-btn edit" data-action="edit" data-id="${escapeHtml(app.id)}">
-                        <span class="btn-icon">✏️</span>Промени
+                    <button type="button" class="btn-action edit" onclick="editAppointment('${escHtml(app.id)}')">
+                        <span class="b-icon">✏️</span>Редакция
+                    </button>
+                    <button type="button" class="btn-action delete" onclick="deleteAppointment('${escHtml(app.id)}')">
+                        <span class="b-icon">🗑️</span>Изтрий
                     </button>
                 </div>
             </div>`;
+    });
+
+    container.innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// VIBER SENDER
+// ═══════════════════════════════════════════════════════════════
+function sendViber(app) {
+    if (!app) return;
+    const dur = parseInt(app.duration || 60);
+    const endT = minutesToTime(timeToMinutes(app.time) + dur);
+    const loc = app.location === 'tarnovo' ? '📍 Търново' : '🏡 На село';
+
+    let msg = `💅 Здравей, напомняне за записан час за маникюр!\n\n`;
+    msg += `👤 Клиент: ${app.name}\n`;
+    msg += `📅 Дата: ${formatBgFullDate(app.date)}\n`;
+    msg += `🕒 Час: ${app.time} – ${endT} (${durationLabel(dur)})\n`;
+    msg += `✨ Процедура: ${app.procedure}\n`;
+    msg += `${loc}\n`;
+    if (app.price) msg += `💰 Цена: ${app.price} €\n`;
+    if (app.notes) msg += `📝 Бележка: ${app.notes}\n`;
+    msg += `\nОчаквам те! 🌸`;
+
+    const encoded = encodeURIComponent(msg);
+
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(msg).catch(() => {});
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    // RENDER — LIST (upcoming / search mode)
-    // ═══════════════════════════════════════════════════════════════
-    function renderList() {
-        const listEl = document.getElementById('appointmentsList');
-        const selectedDate = document.getElementById('selectedDate').value;
-        const searchQuery = document.getElementById('searchInput').value.trim().toLowerCase();
-        const todayStr = getTodayString();
+    if (app.phone) {
+        const cleanPhone = app.phone.replace(/\D/g, '').replace(/^0/, '');
+        window.open(`viber://chat?number=%2B359${cleanPhone}&text=${encoded}`, '_blank');
+        showToast('💬 Отваряне на Вайбър чат...');
+    } else {
+        window.open(`viber://forward?text=${encoded}`, '_blank');
+        showToast('📋 Съобщението е копирано! Избери контакт във Вайбър.');
+    }
+}
 
-        let filtered = appointments.filter(app => {
-            if (currentLocationFilter !== 'all' && app.location !== currentLocationFilter) return false;
-            if (searchQuery) {
-                return app.name.toLowerCase().includes(searchQuery)
-                    || (app.phone || '').toLowerCase().includes(searchQuery)
-                    || (app.notes || '').toLowerCase().includes(searchQuery);
-            }
-            if (currentViewMode === 'upcoming') return app.date >= todayStr;
-            return true;
-        });
+function sendViberToClient(name, phone) {
+    let msg = `💅 Здравей, ${name}! Пиша ти от салона за маникюр. Кога ти е удобно да запишем час? 🌸`;
+    const enc = encodeURIComponent(msg);
+    if (phone) {
+        const clean = phone.replace(/\D/g, '').replace(/^0/, '');
+        window.open(`viber://chat?number=%2B359${clean}&text=${enc}`, '_blank');
+    } else {
+        window.open(`viber://forward?text=${enc}`, '_blank');
+    }
+}
 
-        filtered.sort((a, b) => {
-            if (a.date !== b.date) return a.date.localeCompare(b.date);
-            return a.time.localeCompare(b.time);
-        });
+// ═══════════════════════════════════════════════════════════════
+// Client Autocomplete in Modal
+// ═══════════════════════════════════════════════════════════════
+function renderRecentClientsChips() {
+    const wrap = document.getElementById('recentClientsWrap');
+    const sorted = Object.values(clients).sort((a, b) => (b.visits || 1) - (a.visits || 1)).slice(0, 6);
+    if (sorted.length === 0) {
+        wrap.innerHTML = '';
+        return;
+    }
+    wrap.innerHTML = sorted.map(c => `
+        <button type="button" class="recent-client-pill" onclick="pickClient('${escHtml(c.name)}', '${escHtml(c.phone||'')}')">
+            + ${escHtml(c.name)}
+        </button>
+    `).join('');
+}
 
-        // Stats
-        const totalPrice = filtered.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
-        document.getElementById('countStat').textContent = `${filtered.length} часа`;
-        document.getElementById('priceStat').textContent = `${totalPrice} лв`;
+function onNameInput() {
+    showClientSuggestions();
+    checkConflicts();
+}
 
-        if (filtered.length === 0) {
-            listEl.innerHTML = `
-                <div class="empty-state">
-                    <span class="empty-emoji">💅</span>
-                    <p>Няма записани часове.</p>
-                    <p style="margin-top:4px;font-size:13px">Натисни <strong>+ Нов час</strong> за да добавиш.</p>
-                </div>`;
-            return;
-        }
+function showClientSuggestions() {
+    const input = document.getElementById('formName');
+    const box = document.getElementById('clientSuggestions');
+    const q = input.value.trim().toLowerCase();
 
-        let html = '';
-        let lastDate = '';
+    const all = Object.values(clients).sort((a, b) => (b.visits || 1) - (a.visits || 1));
+    const list = q ? all.filter(c => c.name.toLowerCase().includes(q)) : all.slice(0, 5);
 
-        filtered.forEach(app => {
-            if (app.date !== lastDate) {
-                const isToday = app.date === todayStr;
-                html += `<div class="date-section-header">${isToday ? '📌 Днес — ' : '📅 '}${formatBgDate(app.date)}</div>`;
-                lastDate = app.date;
-            }
-
-            const locLabel = app.location === 'tarnovo' ? '📍 Търново' : '🏡 На село';
-            const locClass = app.location === 'tarnovo' ? 'tarnovo' : 'selo';
-            const priceTag = app.price ? `<span class="tag price">💰 ${escapeHtml(app.price)} лв</span>` : '';
-            const notesHtml = app.notes ? `<div class="card-notes">📝 ${escapeHtml(app.notes)}</div>` : '';
-
-            const doneBtn = app.completed
-                ? `<button class="action-btn undone" data-action="toggle" data-id="${escapeHtml(app.id)}"><span class="btn-icon">↩</span>Върни</button>`
-                : `<button class="action-btn done" data-action="toggle" data-id="${escapeHtml(app.id)}"><span class="btn-icon">✔</span>Готово</button>`;
-
-            const callBtn = app.phone
-                ? `<a href="tel:${escapeHtml(app.phone)}" class="action-btn call"><span class="btn-icon">📞</span>Обади</a>`
-                : ``;
-
-            html += `
-                <div class="card loc-${locClass} ${app.completed ? 'completed' : ''}">
-                    <div class="card-header">
-                        <span class="time-badge">🕒 ${escapeHtml(app.time)}</span>
-                        <span class="loc-badge ${locClass}">${locLabel}</span>
-                    </div>
-                    <div class="client-name">${escapeHtml(app.name)}</div>
-                    <div class="tags-row">
-                        <span class="tag procedure">💅 ${escapeHtml(app.procedure)}</span>
-                        ${priceTag}
-                    </div>
-                    ${notesHtml}
-                    <div class="card-actions">
-                        <button class="action-btn viber" data-action="viber" data-id="${escapeHtml(app.id)}">
-                            <span class="btn-icon">💬</span>Вайбър
-                        </button>
-                        ${callBtn || `<span></span>`}
-                        ${doneBtn}
-                        <button class="action-btn edit" data-action="edit" data-id="${escapeHtml(app.id)}">
-                            <span class="btn-icon">✏️</span>Промени
-                        </button>
-                    </div>
-                </div>`;
-        });
-
-        listEl.innerHTML = html;
+    if (list.length === 0) {
+        box.style.display = 'none';
+        return;
     }
 
-    function renderAppointments() {
-        if (currentViewMode === 'date') {
-            renderHourGrid();
-        } else {
-            renderList();
-        }
-    }
+    box.innerHTML = list.map(c => `
+        <div class="cs-item" onmousedown="pickClient('${escHtml(c.name)}', '${escHtml(c.phone||'')}')">
+            <div>
+                <span class="cs-name">${escHtml(c.name)}</span>
+                ${c.phone ? `<span class="cs-phone">(${escHtml(c.phone)})</span>` : ''}
+            </div>
+            <span class="cs-visits">⭐ ${c.visits || 1}×</span>
+        </div>
+    `).join('');
 
-    // ═══════════════════════════════════════════════════════════════
-    // Modal
-    // ═══════════════════════════════════════════════════════════════
-    function selectFormLocation(loc) {
-        document.getElementById('formLocation').value = loc;
-        document.getElementById('opt-tarnovo').className = 'loc-option ' + (loc === 'tarnovo' ? 'selected-tarnovo' : '');
-        document.getElementById('opt-selo').className    = 'loc-option ' + (loc === 'selo' ? 'selected-selo' : '');
-    }
+    box.style.display = 'block';
+}
 
-    function openModal(editItem = null) {
-        document.getElementById('appointmentForm').reset();
+function hideClientSuggestionsDelayed() {
+    setTimeout(() => {
         document.getElementById('clientSuggestions').style.display = 'none';
+    }, 250);
+}
 
-        if (editItem) {
-            document.getElementById('modalTitle').textContent = 'Редактирай час';
-            document.getElementById('editId').value = editItem.id;
-            selectFormLocation(editItem.location);
-            document.getElementById('formDate').value      = editItem.date;
-            document.getElementById('formTime').value      = editItem.time;
-            document.getElementById('formName').value      = editItem.name;
-            document.getElementById('formPhone').value     = editItem.phone || '';
-            document.getElementById('formPrice').value     = editItem.price || '';
-            document.getElementById('formProcedure').value = editItem.procedure;
-            document.getElementById('formNotes').value     = editItem.notes || '';
-        } else {
-            document.getElementById('modalTitle').textContent = 'Запиши нов час';
-            document.getElementById('editId').value = '';
-            const defaultLoc = currentLocationFilter === 'selo' ? 'selo' : 'tarnovo';
-            selectFormLocation(defaultLoc);
-            document.getElementById('formDate').value  = document.getElementById('selectedDate').value || getTodayString();
-            document.getElementById('formTime').value  = '10:00';
+function pickClient(name, phone) {
+    document.getElementById('formName').value = name;
+    if (phone) document.getElementById('formPhone').value = phone;
+    document.getElementById('clientSuggestions').style.display = 'none';
+    checkConflicts();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Manual Duration Selection (Избира се свободно)
+// ═══════════════════════════════════════════════════════════════
+function setDurationManual(min) {
+    document.getElementById('formDuration').value = String(min);
+    highlightDurationPill(min);
+    checkConflicts();
+}
+
+function highlightDurationPill(min) {
+    document.querySelectorAll('.dur-pill').forEach(b => {
+        const val = parseInt(b.dataset.dur) || 60;
+        b.classList.toggle('active', val === parseInt(min));
+    });
+}
+
+function selectFormLocation(loc) {
+    document.getElementById('formLocation').value = loc;
+    document.getElementById('opt-tarnovo').className = 'loc-option ' + (loc === 'tarnovo' ? 'selected-tarnovo' : '');
+    document.getElementById('opt-selo').className    = 'loc-option ' + (loc === 'selo'    ? 'selected-selo'    : '');
+}
+
+function openModal(editItem = null) {
+    document.getElementById('appointmentForm').reset();
+    document.getElementById('clientSuggestions').style.display = 'none';
+    document.getElementById('conflictBox').classList.remove('show');
+    document.getElementById('saveBtn').disabled = false;
+
+    renderRecentClientsChips();
+
+    if (editItem) {
+        document.getElementById('modalTitle').textContent = 'Редактирай час';
+        document.getElementById('editId').value = editItem.id;
+        selectFormLocation(editItem.location || 'tarnovo');
+        document.getElementById('formDate').value     = editItem.date;
+        document.getElementById('formTime').value     = editItem.time;
+        const dur = parseInt(editItem.duration || 60);
+        document.getElementById('formDuration').value = String(dur);
+        highlightDurationPill(dur);
+        document.getElementById('formName').value     = editItem.name;
+        document.getElementById('formPhone').value    = editItem.phone || '';
+        document.getElementById('formPrice').value    = editItem.price || '';
+        document.getElementById('formProcedure').value= editItem.procedure;
+        document.getElementById('formNotes').value    = editItem.notes || '';
+    } else {
+        document.getElementById('modalTitle').textContent = 'Запиши нов час';
+        document.getElementById('editId').value = '';
+        selectFormLocation(currentLocationFilter === 'selo' ? 'selo' : 'tarnovo');
+        document.getElementById('formDate').value = document.getElementById('selectedDate').value || getTodayString();
+        document.getElementById('formTime').value = '10:00';
+        document.getElementById('formDuration').value = '60';
+        highlightDurationPill(60);
+    }
+
+    checkConflicts();
+    document.getElementById('modalOverlay').classList.add('open');
+    setTimeout(() => document.getElementById('formName').focus(), 250);
+}
+
+// When opening from a gap (дупка), prefill start time & default duration
+function openModalAtTime(date, time, gapDurationMin) {
+    openModal();
+    document.getElementById('formDate').value = date;
+    document.getElementById('formTime').value = time;
+    // Suggest duration that fits in the gap, default to 60 or 90
+    if (gapDurationMin) {
+        const preferred = Math.min(gapDurationMin, 90);
+        const durToSet = (preferred >= 60) ? 60 : preferred;
+        setDurationManual(durToSet);
+    }
+    checkConflicts();
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.getElementById('clientSuggestions').style.display = 'none';
+}
+
+function closeModalOnOutsideClick(e) {
+    if (e.target.id === 'modalOverlay') closeModal();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Save Appointment
+// ═══════════════════════════════════════════════════════════════
+function saveAppointment(e) {
+    e.preventDefault();
+
+    const editId = document.getElementById('editId').value;
+    const date   = document.getElementById('formDate').value;
+    const time   = document.getElementById('formTime').value;
+    const dur    = document.getElementById('formDuration').value;
+    const name   = document.getElementById('formName').value.trim();
+    const phone  = document.getElementById('formPhone').value.trim();
+    const price  = document.getElementById('formPrice').value.trim();
+    const proc   = document.getElementById('formProcedure').value;
+    const notes  = document.getElementById('formNotes').value.trim();
+    const loc    = document.getElementById('formLocation').value;
+
+    // Strict conflict guard
+    const conflicts = getConflicts(date, time, dur, editId);
+    if (conflicts.length > 0) {
+        showToast('⛔ Часът се застъпва с друг записан час!');
+        checkConflicts();
+        return;
+    }
+
+    const itemData = {
+        id:        editId || `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        location:  loc,
+        date:      date,
+        time:      time,
+        duration:  dur,
+        name:      name,
+        phone:     phone,
+        price:     price,
+        procedure: proc,
+        notes:     notes,
+        completed: false
+    };
+
+    if (editId) {
+        const idx = appointments.findIndex(a => a.id === editId);
+        if (idx !== -1) {
+            itemData.completed = appointments[idx].completed;
+            appointments[idx] = itemData;
+        }
+    } else {
+        appointments.push(itemData);
+    }
+
+    upsertClient(name, phone, date);
+    saveAppointments();
+    document.getElementById('selectedDate').value = itemData.date;
+    closeModal();
+    renderCurrentView();
+    showToast(editId ? '✏️ Часът е обновен!' : `✅ Часът на ${name} е записан!`);
+}
+
+function editAppointment(id) {
+    const item = appointments.find(a => a.id === id);
+    if (item) openModal(item);
+}
+
+function toggleCompleted(id) {
+    const item = appointments.find(a => a.id === id);
+    if (item) {
+        item.completed = !item.completed;
+        saveAppointments();
+        renderCurrentView();
+        showToast(item.completed ? '✔ Часът е завършен!' : '↩ Часът е върнат като активен');
+    }
+}
+
+function deleteAppointment(id) {
+    const item = appointments.find(a => a.id === id);
+    if (!item) return;
+    if (confirm(`Сигурна ли си, че искаш да изтриеш часа на ${item.name} (${item.date} в ${item.time})?`)) {
+        appointments = appointments.filter(a => a.id !== id);
+        saveAppointments();
+        renderCurrentView();
+        showToast('🗑️ Часът е изтрит');
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Backup / Restore
+// ═══════════════════════════════════════════════════════════════
+function exportData() {
+    const backupObj = {
+        version: 2,
+        exportDate: getTodayString(),
+        appointments: appointments,
+        clients: clients
+    };
+    const blob = new Blob([JSON.stringify(backupObj, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `grafik-nokti-backup-${getTodayString()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('⬇️ Бекъпът е изтеглен успешно!');
+}
+
+function importData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        let imported;
+        try {
+            imported = JSON.parse(e.target.result);
+        } catch {
+            showToast('❌ Невалиден JSON файл!');
+            return;
         }
 
-        document.getElementById('modalOverlay').classList.add('open');
-        setTimeout(() => document.getElementById('formName').focus(), 300);
-    }
-
-    function openModalAtTime(date, time) {
-        openModal();
-        document.getElementById('formDate').value = date;
-        document.getElementById('formTime').value = time;
-    }
-
-    function closeModal() {
-        document.getElementById('modalOverlay').classList.remove('open');
-        document.getElementById('clientSuggestions').style.display = 'none';
-    }
-
-    function closeModalOnOutsideClick(e) {
-        if (e.target.id === 'modalOverlay') closeModal();
-    }
-
-    function saveAppointment(e) {
-        e.preventDefault();
-        const editId = document.getElementById('editId').value;
-
-        const itemData = {
-            id:        editId || `${Date.now()}-${Math.random().toString(36).slice(2,7)}`,
-            location:  document.getElementById('formLocation').value,
-            date:      document.getElementById('formDate').value,
-            time:      document.getElementById('formTime').value,
-            name:      document.getElementById('formName').value.trim(),
-            phone:     document.getElementById('formPhone').value.trim(),
-            price:     document.getElementById('formPrice').value,
-            procedure: document.getElementById('formProcedure').value,
-            notes:     document.getElementById('formNotes').value.trim(),
-            completed: false
-        };
-
-        if (editId) {
-            const idx = appointments.findIndex(a => a.id === editId);
-            if (idx !== -1) {
-                itemData.completed = appointments[idx].completed;
-                appointments[idx] = itemData;
+        if (Array.isArray(imported)) {
+            appointments = imported.filter(a => a && a.id && a.date && a.time && a.name);
+        } else if (imported && typeof imported === 'object') {
+            if (Array.isArray(imported.appointments)) {
+                appointments = imported.appointments.filter(a => a && a.id && a.date && a.time && a.name);
+            }
+            if (imported.clients && typeof imported.clients === 'object') {
+                clients = imported.clients;
+                saveClients();
             }
         } else {
-            appointments.push(itemData);
-        }
-
-        // Remember client
-        upsertClient(itemData.name, itemData.phone);
-
-        saveToStorage();
-        document.getElementById('selectedDate').value = itemData.date;
-        setViewMode('date');
-        closeModal();
-        renderAppointments();
-        showToast(editId ? '✏️ Часът е обновен!' : '✅ Часът е записан!');
-    }
-
-    function editAppointment(id) {
-        const item = appointments.find(a => a.id === id);
-        if (item) openModal(item);
-    }
-
-    function toggleCompleted(id) {
-        const item = appointments.find(a => a.id === id);
-        if (item) {
-            item.completed = !item.completed;
-            saveToStorage();
-            renderAppointments();
-            showToast(item.completed ? '✔ Готово!' : '↩ Върнато');
-        }
-    }
-
-    function deleteAppointment(id) {
-        const item = appointments.find(a => a.id === id);
-        if (!item) return;
-        if (confirm(`Изтрий часа на ${item.name}?`)) {
-            appointments = appointments.filter(a => a.id !== id);
-            saveToStorage();
-            renderAppointments();
-            showToast('🗑️ Часът е изтрит');
-        }
-    }
-
-    // ═══════════════════════════════════════════════════════════════
-    // Backup / Restore
-    // ═══════════════════════════════════════════════════════════════
-    function exportData() {
-        const dataStr = JSON.stringify(appointments, null, 2);
-        const blob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `grafik-nokti-backup-${getTodayString()}.json`;
-        a.click();
-        URL.revokeObjectURL(url);
-        showToast('⬇️ Бекъпът е изтеглен!');
-    }
-
-    function importData(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            let imported;
-            try { imported = JSON.parse(e.target.result); }
-            catch (err) { showToast('❌ Невалиден файл!'); return; }
-
-            if (!Array.isArray(imported) || !imported.every(isValidAppointment)) {
-                showToast('❌ Файлът съдържа невалидни данни!');
-                return;
-            }
-            appointments = imported;
-            saveToStorage();
-            renderAppointments();
-            showToast(`✅ Заредени ${imported.length} записа!`);
-        };
-        reader.readAsText(file);
-        event.target.value = '';
-    }
-
-    // ═══════════════════════════════════════════════════════════════
-    // Security — HTML escape
-    // ═══════════════════════════════════════════════════════════════
-    function escapeHtml(str) {
-        return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
-    }
-
-    // ═══════════════════════════════════════════════════════════════
-    // Event delegation for card / slot actions
-    // ═══════════════════════════════════════════════════════════════
-    function handleCardAction(event) {
-        const button = event.target.closest('[data-action]');
-        if (!button) return;
-        const { action, id } = button.dataset;
-        if (action === 'toggle') toggleCompleted(id);
-        if (action === 'edit')   editAppointment(id);
-        if (action === 'delete') deleteAppointment(id);
-        if (action === 'viber') {
-            const app = appointments.find(a => a.id === id);
-            if (app) sendViber(app);
-        }
-    }
-
-    document.getElementById('appointmentsList').addEventListener('click', handleCardAction);
-    document.getElementById('hourGrid').addEventListener('click', handleCardAction);
-
-    // Swipe to close modal
-    let touchStartY = 0;
-    document.querySelector('.modal').addEventListener('touchstart', e => {
-        touchStartY = e.touches[0].clientY;
-    }, { passive: true });
-    document.querySelector('.modal').addEventListener('touchmove', e => {
-        const diff = e.touches[0].clientY - touchStartY;
-        if (diff > 80) closeModal();
-    }, { passive: true });
-
-    // ═══════════════════════════════════════════════════════════════
-    // Initial render
-    // ═══════════════════════════════════════════════════════════════
-    setViewMode('date');
-
-    // ═══════════════════════════════════════════════════════════════
-    // EARNINGS — state
-    // ═══════════════════════════════════════════════════════════════
-    let earningsYear = new Date().getFullYear();
-    let selectedEarningsMonth = null;
-
-    const BG_MONTHS = [
-        'Януари','Февруари','Март','Април','Май','Юни',
-        'Юли','Август','Септември','Октомври','Ноември','Декември'
-    ];
-
-    function getDateString(d) {
-        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    }
-
-    function changeEarningsYear(delta) {
-        earningsYear += delta;
-        document.getElementById('earningsYearLabel').textContent = earningsYear;
-        selectedEarningsMonth = null;
-        renderMonthGrid();
-        document.getElementById('rangeFrom').value = '';
-        document.getElementById('rangeTo').value = '';
-        document.getElementById('earningsResult').innerHTML = '';
-        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
-    }
-
-    function renderMonthGrid() {
-        document.getElementById('earningsYearLabel').textContent = earningsYear;
-        const today = new Date();
-        const thisYear  = today.getFullYear();
-        const thisMonth = today.getMonth();
-        let html = '';
-
-        for (let m = 0; m < 12; m++) {
-            const monthStart = `${earningsYear}-${String(m+1).padStart(2,'0')}-01`;
-            const monthEnd   = `${earningsYear}-${String(m+1).padStart(2,'0')}-${new Date(earningsYear, m+1, 0).getDate()}`;
-            const inMonth = appointments.filter(a =>
-                a.date >= monthStart && a.date <= monthEnd && a.price
-            );
-            const total = inMonth.reduce((s, a) => s + (Number(a.price) || 0), 0);
-            const count = inMonth.length;
-
-            const isCurrent = earningsYear === thisYear && m === thisMonth;
-            const isSelected = selectedEarningsMonth === m;
-
-            html += `
-                <div class="month-card ${isSelected ? 'selected' : ''} ${isCurrent ? 'current-month' : ''}"
-                     onclick="selectMonth(${m})">
-                    <div class="month-card-name">${BG_MONTHS[m]}</div>
-                    <div class="month-card-amount ${total > 0 ? 'has-income' : ''}">${total > 0 ? total + ' лв' : '—'}</div>
-                    <div class="month-card-count">${count > 0 ? count + ' часа' : ''}</div>
-                </div>`;
-        }
-        document.getElementById('monthGrid').innerHTML = html;
-    }
-
-    function selectMonth(monthIndex) {
-        selectedEarningsMonth = monthIndex;
-        renderMonthGrid();
-
-        const year = earningsYear;
-        const m = monthIndex;
-        const firstDay = getDateString(new Date(year, m, 1));
-        const lastDay  = getDateString(new Date(year, m+1, 0));
-        document.getElementById('rangeFrom').value = firstDay;
-        document.getElementById('rangeTo').value   = lastDay;
-
-        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
-        renderEarnings();
-    }
-
-    function setPreset(key) {
-        selectedEarningsMonth = null;
-        renderMonthGrid();
-        const today = new Date();
-        let from, to;
-
-        if (key === 'week') {
-            const day = today.getDay() === 0 ? 6 : today.getDay() - 1;
-            from = new Date(today); from.setDate(today.getDate() - day);
-            to   = new Date(today);
-        } else if (key === 'month') {
-            from = new Date(today.getFullYear(), today.getMonth(), 1);
-            to   = new Date(today.getFullYear(), today.getMonth()+1, 0);
-            earningsYear = today.getFullYear();
-        } else if (key === 'quarter') {
-            from = new Date(today); from.setMonth(today.getMonth() - 2); from.setDate(1);
-            to   = new Date(today.getFullYear(), today.getMonth()+1, 0);
-        } else if (key === 'year') {
-            from = new Date(today.getFullYear(), 0, 1);
-            to   = new Date(today.getFullYear(), 11, 31);
-            earningsYear = today.getFullYear();
-        } else if (key === 'all') {
-            const dates = appointments.map(a => a.date).sort();
-            if (dates.length === 0) { renderEarnings(); return; }
-            from = new Date(dates[0] + 'T00:00:00');
-            to   = new Date(dates[dates.length-1] + 'T00:00:00');
-        }
-
-        document.getElementById('rangeFrom').value = getDateString(from);
-        document.getElementById('rangeTo').value   = getDateString(to);
-
-        document.querySelectorAll('.preset-btn').forEach(b => {
-            b.classList.toggle('active-preset', b.textContent.trim() === {
-                week: 'Тази седмица', month: 'Този месец',
-                quarter: '3 месеца', year: 'Тази година', all: 'Всичко'
-            }[key]);
-        });
-        renderEarnings();
-    }
-
-    function renderEarnings() {
-        const fromVal = document.getElementById('rangeFrom').value;
-        const toVal   = document.getElementById('rangeTo').value;
-        const el = document.getElementById('earningsResult');
-
-        if (!fromVal || !toVal) {
-            el.innerHTML = `<div class="no-earnings">👆 Избери месец или период горе</div>`;
+            showToast('❌ Файлът не съдържа валидни данни!');
             return;
         }
 
-        if (fromVal > toVal) {
-            el.innerHTML = `<div class="no-earnings">⚠️ „От дата" трябва да е преди „До дата"</div>`;
-            return;
-        }
+        saveAppointments();
+        renderCurrentView();
+        showToast(`✅ Възстановени ${appointments.length} часа и ${Object.keys(clients).length} клиентки!`);
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+}
 
-        const filtered = appointments.filter(a => a.price && a.date >= fromVal && a.date <= toVal);
+function escHtml(str) {
+    return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
 
-        const fromDate = new Date(fromVal + 'T00:00:00');
-        const toDate   = new Date(toVal   + 'T00:00:00');
-        const periodLabel = fromVal === toVal
-            ? fromDate.toLocaleDateString('bg-BG', { day: 'numeric', month: 'long', year: 'numeric' })
-            : `${fromDate.toLocaleDateString('bg-BG', { day: 'numeric', month: 'short' })} — ${toDate.toLocaleDateString('bg-BG', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+// Swipe to close modal
+let touchStartY = 0;
+const modalEl = document.getElementById('theModal');
+modalEl.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
+modalEl.addEventListener('touchmove', e => {
+    if (e.touches[0].clientY - touchStartY > 90) closeModal();
+}, { passive: true });
 
-        const total  = filtered.reduce((s, a) => s + (Number(a.price) || 0), 0);
-        const avgPer = filtered.length > 0 ? (total / filtered.length).toFixed(1) : 0;
+// ═══════════════════════════════════════════════════════════════
+// 4. EARNINGS (Приходи в €)
+// ═══════════════════════════════════════════════════════════════
+let earningsYear = new Date().getFullYear();
+let selectedEarningsMonth = null;
+const BG_MONTHS = ['Януари','Февруари','Март','Април','Май','Юни','Юли','Август','Септември','Октомври','Ноември','Декември'];
 
-        if (filtered.length === 0) {
-            el.innerHTML = `
-                <div class="earnings-summary">
-                    <div class="summary-label">${periodLabel}</div>
-                    <div class="summary-total">0 лв</div>
-                    <div class="summary-meta"><span>📋 Няма часове с цена</span></div>
-                </div>`;
-            return;
-        }
+function getDateString(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 
-        const tarFilter = filtered.filter(a => a.location === 'tarnovo');
-        const seloFilter = filtered.filter(a => a.location === 'selo');
-        const tarTotal  = tarFilter.reduce((s, a) => s + (Number(a.price) || 0), 0);
-        const seloTotal = seloFilter.reduce((s, a) => s + (Number(a.price) || 0), 0);
+function changeEarningsYear(delta) {
+    earningsYear += delta;
+    selectedEarningsMonth = null;
+    document.getElementById('earningsYearLabel').textContent = earningsYear;
+    document.getElementById('rangeFrom').value = '';
+    document.getElementById('rangeTo').value = '';
+    document.getElementById('earningsResult').innerHTML = '';
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
+    renderMonthGrid();
+}
 
-        const procMap = {};
-        filtered.forEach(a => {
-            if (!procMap[a.procedure]) procMap[a.procedure] = { count: 0, total: 0 };
-            procMap[a.procedure].count++;
-            procMap[a.procedure].total += Number(a.price) || 0;
-        });
-        const procList = Object.entries(procMap).sort((a, b) => b[1].total - a[1].total);
-        const maxProc  = procList[0]?.[1].total || 1;
+function renderMonthGrid() {
+    document.getElementById('earningsYearLabel').textContent = earningsYear;
+    const today = new Date();
+    const ty = today.getFullYear();
+    const tm = today.getMonth();
+    let html = '';
 
-        const breakdownHtml = procList.map(([name, data]) => `
-            <div class="breakdown-row">
-                <div class="breakdown-top">
-                    <span class="breakdown-name">${escapeHtml(name)}</span>
-                    <span class="breakdown-count">${data.count}×</span>
-                    <span class="breakdown-amount">${data.total} лв</span>
-                </div>
-                <div class="breakdown-bar-wrap">
-                    <div class="breakdown-bar" style="width:${Math.round(data.total/maxProc*100)}%"></div>
-                </div>
-            </div>`).join('');
+    for (let m = 0; m < 12; m++) {
+        const ms = `${earningsYear}-${String(m+1).padStart(2,'0')}-01`;
+        const me = `${earningsYear}-${String(m+1).padStart(2,'0')}-${new Date(earningsYear,m+1,0).getDate()}`;
+        const inp = appointments.filter(a => a.date >= ms && a.date <= me && a.price);
+        const tot = inp.reduce((s, a) => s + (Number(a.price) || 0), 0);
 
+        html += `
+            <div class="month-card ${selectedEarningsMonth===m?'selected':''} ${earningsYear===ty&&m===tm?'current-month':''}" onclick="selectMonth(${m})">
+                <div class="month-card-name">${BG_MONTHS[m]}</div>
+                <div class="month-card-amount ${tot>0?'has-income':''}">${tot>0 ? tot+' €' : '—'}</div>
+                <div class="month-card-count">${inp.length>0 ? inp.length+' часа' : ''}</div>
+            </div>`;
+    }
+    document.getElementById('monthGrid').innerHTML = html;
+}
+
+function selectMonth(m) {
+    selectedEarningsMonth = m;
+    renderMonthGrid();
+    document.getElementById('rangeFrom').value = getDateString(new Date(earningsYear, m, 1));
+    document.getElementById('rangeTo').value   = getDateString(new Date(earningsYear, m+1, 0));
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
+    renderEarnings();
+}
+
+function setPreset(key) {
+    selectedEarningsMonth = null;
+    renderMonthGrid();
+    const today = new Date();
+    let from, to;
+
+    if (key === 'week') {
+        const d = today.getDay() === 0 ? 6 : today.getDay() - 1;
+        from = new Date(today); from.setDate(today.getDate() - d);
+        to = new Date(today);
+    } else if (key === 'month') {
+        from = new Date(today.getFullYear(), today.getMonth(), 1);
+        to = new Date(today.getFullYear(), today.getMonth()+1, 0);
+        earningsYear = today.getFullYear();
+    } else if (key === 'quarter') {
+        from = new Date(today); from.setMonth(today.getMonth() - 2); from.setDate(1);
+        to = new Date(today.getFullYear(), today.getMonth()+1, 0);
+    } else if (key === 'year') {
+        from = new Date(today.getFullYear(), 0, 1);
+        to = new Date(today.getFullYear(), 11, 31);
+        earningsYear = today.getFullYear();
+    } else if (key === 'all') {
+        const dates = appointments.map(a => a.date).sort();
+        if (!dates.length) { renderEarnings(); return; }
+        from = new Date(dates[0] + 'T00:00:00');
+        to = new Date(dates[dates.length-1] + 'T00:00:00');
+    }
+
+    document.getElementById('rangeFrom').value = getDateString(from);
+    document.getElementById('rangeTo').value   = getDateString(to);
+
+    document.querySelectorAll('.preset-btn').forEach(b =>
+        b.classList.toggle('active-preset', b.textContent.trim() === {
+            week:'Тази седмица', month:'Този месец', quarter:'3 месеца', year:'Тази година', all:'Всичко'
+        }[key])
+    );
+    renderEarnings();
+}
+
+function renderEarnings() {
+    const fv = document.getElementById('rangeFrom').value;
+    const tv = document.getElementById('rangeTo').value;
+    const el = document.getElementById('earningsResult');
+
+    if (!fv || !tv) {
+        el.innerHTML = `<div class="no-earnings">👆 Избери месец от решетката горе или посочи период</div>`;
+        return;
+    }
+
+    if (fv > tv) {
+        el.innerHTML = `<div class="no-earnings">⚠️ „От дата“ трябва да е преди „До дата“</div>`;
+        return;
+    }
+
+    const filtered = appointments.filter(a => a.price && a.date >= fv && a.date <= tv);
+    const fd = new Date(fv + 'T00:00:00');
+    const td = new Date(tv + 'T00:00:00');
+    const periodLabel = (fv === tv)
+        ? fd.toLocaleDateString('bg-BG', { day: 'numeric', month: 'long', year: 'numeric' })
+        : `${fd.toLocaleDateString('bg-BG', { day: 'numeric', month: 'short' })} — ${td.toLocaleDateString('bg-BG', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+
+    const total = filtered.reduce((s, a) => s + (Number(a.price) || 0), 0);
+    const avg = filtered.length > 0 ? (total / filtered.length).toFixed(1) : 0;
+
+    if (!filtered.length) {
         el.innerHTML = `
             <div class="earnings-summary">
                 <div class="summary-label">${periodLabel}</div>
-                <div class="summary-total">${total} лв</div>
-                <div class="summary-meta">
-                    <span>📋 ${filtered.length} часа</span>
-                    <span>📊 Средно ${avgPer} лв/час</span>
-                </div>
-            </div>
-
-            <div class="location-split">
-                <div class="split-card tarnovo">
-                    <div class="split-icon">📍</div>
-                    <div class="split-label">Търново</div>
-                    <div class="split-amount">${tarTotal} лв</div>
-                    <div class="split-count">${tarFilter.length} часа</div>
-                </div>
-                <div class="split-card selo">
-                    <div class="split-icon">🏡</div>
-                    <div class="split-label">На село</div>
-                    <div class="split-amount">${seloTotal} лв</div>
-                    <div class="split-count">${seloFilter.length} часа</div>
-                </div>
-            </div>
-
-            <div class="breakdown-section">
-                <h3>💅 По процедура</h3>
-                ${breakdownHtml}
+                <div class="summary-total">0 €</div>
+                <div class="summary-meta"><span>📋 Няма часове с въведена цена</span></div>
             </div>`;
+        return;
     }
+
+    const tarf = filtered.filter(a => a.location === 'tarnovo');
+    const selof = filtered.filter(a => a.location === 'selo');
+    const tart = tarf.reduce((s, a) => s + (Number(a.price) || 0), 0);
+    const selot = selof.reduce((s, a) => s + (Number(a.price) || 0), 0);
+
+    const pm = {};
+    filtered.forEach(a => {
+        if (!pm[a.procedure]) pm[a.procedure] = { count: 0, total: 0 };
+        pm[a.procedure].count++;
+        pm[a.procedure].total += Number(a.price) || 0;
+    });
+    const pl = Object.entries(pm).sort((a, b) => b[1].total - a[1].total);
+    const mx = pl[0]?.[1].total || 1;
+
+    el.innerHTML = `
+        <div class="earnings-summary">
+            <div class="summary-label">${periodLabel}</div>
+            <div class="summary-total">${total} €</div>
+            <div class="summary-meta">
+                <span>📋 ${filtered.length} часа</span>
+                <span>📊 Средно ${avg} €/час</span>
+            </div>
+        </div>
+
+        <div class="location-split">
+            <div class="split-card tarnovo">
+                <div class="split-label">📍 Търново</div>
+                <div class="split-amount">${tart} €</div>
+                <div class="split-count">${tarf.length} часа</div>
+            </div>
+            <div class="split-card selo">
+                <div class="split-label">🏡 На село</div>
+                <div class="split-amount">${selot} €</div>
+                <div class="split-count">${selof.length} часа</div>
+            </div>
+        </div>
+
+        <div class="breakdown-section">
+            <h3>💅 Приходи по процедура</h3>
+            ${pl.map(([n, d]) => `
+                <div class="breakdown-row">
+                    <div class="breakdown-top">
+                        <span class="breakdown-name">${escHtml(n)}</span>
+                        <span class="breakdown-count">${d.count}×</span>
+                        <span class="breakdown-amount">${d.total} €</span>
+                    </div>
+                    <div class="breakdown-bar-wrap">
+                        <div class="breakdown-bar" style="width:${Math.round(d.total/mx*100)}%"></div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Initial start
+// ═══════════════════════════════════════════════════════════════
+setViewMode('date');
 </script>
 </body>
 </html>
